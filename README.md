@@ -1,0 +1,1 @@
+firestore-react-redux-skeleton
