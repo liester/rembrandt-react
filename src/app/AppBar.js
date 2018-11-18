@@ -82,7 +82,7 @@ class AppBar extends React.Component {
             </Menu>
           </div>
           <span>
-            Firestore React Redux Skeleton App
+            Rembrandt
           </span>
         </Toolbar>
       </MuiAppBar>
