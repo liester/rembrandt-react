@@ -6,7 +6,7 @@ import { reducer as formReducer } from 'redux-form';
 import thunk from 'redux-thunk';
 import reduxLogger from 'redux-logger';
 import appConfig from '../app/appConfig';
-import itemDuck from '../item/itemDuck';
+import itemDuck from '../item/itemsReducer';
 
 const reducers = { items: itemDuck };
 
