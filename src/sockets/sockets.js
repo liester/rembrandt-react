@@ -8,7 +8,7 @@ const socket = io(appConfig.socketUrl);
 
 const setupSocket = dispatch => {
   socket.on('items.updated', data => {
-    dispatch({ type: ITEMS_UPDATED, payload: [data] });
+    dispatch({ type: ITEMS_UPDATED, payload: data });
   });
   return socket;
 };
