@@ -96,6 +96,10 @@ class Item extends React.Component {
     return `Price Drop In:${remainingTimeInSeconds} seconds`;
   };
 
+  renderTotalViewers = totalViewers => {
+    return `Total Views: ${totalViewers}`;
+  };
+
   render() {
     const { item, classes } = this.props;
     return (
@@ -141,7 +145,7 @@ class Item extends React.Component {
             className={classes.watchingIcon}
           />
           <span className={classes.watchingText}>
-            &nbsp; 25+ watchers!
+            &nbsp; {this.renderTotalViewers(item.totalViews)}
           </span>
           <IconButton
             className={ classnames(classes.expand, {
