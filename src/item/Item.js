@@ -17,6 +17,7 @@ import FavoriteIcon from '@material-ui/icons/Favorite';
 import ShareIcon from '@material-ui/icons/Share';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
+import VisibleIcon from '@material-ui/icons/Visibility';
 
 const styles = theme => ({
   card: {
@@ -53,6 +54,14 @@ const styles = theme => ({
   itemAvailable: {
     color: green[500],
   },
+  watchingIcon: {
+    color: red[500],
+    marginLeft: 45,
+  },
+  watchingText: {
+    fontSize: 12,
+  },
+  
 });
 
 class Item extends React.Component {
@@ -128,6 +137,12 @@ class Item extends React.Component {
           <IconButton aria-label="Share">
             <ShareIcon />
           </IconButton>
+          <VisibleIcon 
+            className={classes.watchingIcon}
+          />
+          <span className={classes.watchingText}>
+            &nbsp; 25+ watchers!
+          </span>
           <IconButton
             className={ classnames(classes.expand, {
               [classes.expandOpen]: this.state.expanded,
