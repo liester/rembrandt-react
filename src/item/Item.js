@@ -56,12 +56,17 @@ const styles = theme => ({
   },
   watchingIcon: {
     color: red[500],
-    marginLeft: 45,
   },
   watchingText: {
     fontSize: 12,
   },
-  
+  watchingBlock: {
+    margin: '0 auto',
+    border: '1px solid #bbb',
+    borderRadius: '5px',
+    padding: '.25em',
+    boxShadow: '1px 1px 1px #bbb',
+  },
 });
 
 class Item extends React.Component {
@@ -96,8 +101,17 @@ class Item extends React.Component {
     return `Price Drop In:${remainingTimeInSeconds} seconds`;
   };
 
-  renderTotalViewers = totalViewers => {
-    return `Total Views: ${totalViewers}`;
+  renderTotalViewers = (totalViewers, classes) => {
+    if(totalViewers > 5){
+    return (
+      <div className={classes.watchingBlock}>
+          <VisibleIcon className={classes.watchingIcon}/>
+          <span className={classes.watchingText}>&nbsp;&nbsp;{totalViewers}+ viewers!</span>
+      </div>
+    )
+    } else {
+      return null
+    };
   };
 
   render() {
@@ -141,12 +155,7 @@ class Item extends React.Component {
           <IconButton aria-label="Share">
             <ShareIcon />
           </IconButton>
-          <VisibleIcon 
-            className={classes.watchingIcon}
-          />
-          <span className={classes.watchingText}>
-            &nbsp; {this.renderTotalViewers(item.totalViews)}
-          </span>
+          {this.renderTotalViewers(item.totalViews,classes)}
           <IconButton
             className={ classnames(classes.expand, {
               [classes.expandOpen]: this.state.expanded,
