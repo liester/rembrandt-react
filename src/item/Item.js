@@ -62,11 +62,10 @@ const styles = theme => ({
   },
   watchingBlock: {
     margin: '0 auto',
-    border: '1px solid #bbb',
-    borderRadius: '5px',
-    padding: '.25em',
-    boxShadow: '1px 1px 1px #bbb',
-  },
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+ },
 });
 
 class Item extends React.Component {
