@@ -9,6 +9,7 @@ import { storeConfig } from '../common/storeConfig';
 import theme from '../common/theme';
 import AllItems from '../item/AllItems';
 import Item from '../item/Item.js';
+import Buyer from '../buyer/Buyer.js';
 
 class App extends React.Component {
   render() {
@@ -21,6 +22,7 @@ class App extends React.Component {
                   <Switch>
                     <Route exact path="/" component={AllItems} />
                     <Route exact path="/item/:id" component={Item} />
+                    <Route exact path="/buyer/:buyerId" component={Buyer} />
                   </Switch>
               </Router>
             </ResponsiveDrawer>

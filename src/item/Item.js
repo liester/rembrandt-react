@@ -96,6 +96,10 @@ const styles = theme => ({
   },
   description: {
     fontWeight: 'bold',
+  },
+  itemSold: {
+    color: red[500],
+    fontWeight: 'bold',
   }
 });
 
