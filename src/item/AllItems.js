@@ -5,6 +5,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import Item from './Item';
 import * as itemsActions from './itemsActions.js';
+import ShortItem from "./ShortItem";
 
 const styles = {
   container: {
@@ -29,7 +30,7 @@ class AllItems extends React.Component {
     const { allItems, classes } = this.props;
     return (
       <div className={ classes.container }>
-        {allItems.map((item, index) => <Item item={ item } key={ index } />)}
+        {allItems.map((item, index) => <ShortItem item={ item } key={ index } />)}
       </div>
     );
   }

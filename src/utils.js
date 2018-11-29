@@ -8,3 +8,12 @@ export const hhmmss = secs => {
   minutes = minutes % 60;
   return `${pad(hours)}:${pad(minutes)}:${pad(secs)}`;
 };
+
+export const trimText  = (text, maxLength) => {
+  if(text.length > maxLength){
+    return text.substring(0, maxLength - 3) + '...';
+  }
+  else{
+    return text;
+  }
+};
