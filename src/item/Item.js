@@ -79,6 +79,22 @@ const styles = theme => ({
     position: 'fixed',
     top: 30,
     right: 30,
+  },
+  buyButton: {
+    backgroundColor: green[500],
+    boxShadow: '1px 1px 3px #ccc',
+    color: 'white',
+    margin: '0 auto',
+    marginTop: 20,
+  },
+  buyInfo: {
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  description: {
+    fontWeight: 'bold',
   }
 });
 
@@ -87,7 +103,7 @@ class Item extends React.Component {
     item: PropTypes.object.isRequired,
     classes: PropTypes.object.isRequired,
   };
-
+  
   state = {
     expanded: false,
     isFlipped: false
@@ -139,6 +155,11 @@ class Item extends React.Component {
     }
   };
 
+  buyItem = (itemId, buyerId) => {
+    console.log('hello')
+    this.props.itemsActions.buyItemById(itemId, buyerId)
+  }
+
   render() {
     const { item, classes } = this.props;
     return (
@@ -179,7 +200,7 @@ class Item extends React.Component {
                   <Info className={classes.infoButton} />
                 </IconButton>
                 <CardContent>
-                  <Typography paragraph>Description:</Typography>
+                  <Typography paragraph className={classes.description}>Description:</Typography>
                   <Typography paragraph>
                     {item.description}
                   </Typography>
@@ -187,15 +208,23 @@ class Item extends React.Component {
               </BackSide>
             </Flippy>
             <CardContent>
-              <Typography variant="h5">
-                Current Price: ${item.currentPrice}
-              </Typography>
-              {/* <Typography>
-                {this.renderTimeRemaining(item.secondsUntilDecrease)}
-              </Typography> */}
+              <div className={classes.buyInfo}>
               <Typography>
                 {this.renderStatus(item.status, classes)}
               </Typography>
+              <Typography variant="h5">
+                Current Price: ${item.currentPrice}
+              </Typography>
+              <Button className={classes.buyButton} onClick={() => {
+                this.buyItem('CpNjxLIJok3BCGoT9EGZ', 8675309)
+              }}>
+                Buy This!
+              </Button>
+              {/* <Typography>
+                {this.renderTimeRemaining(item.secondsUntilDecrease)}
+              </Typography> */}
+              
+              </div>
             </CardContent>
             <CardActions className={classes.actions} disableActionSpacing>
               <IconButton aria-label="Add to favorites">
