@@ -30,7 +30,7 @@ class AllItems extends React.Component {
     const { allItems, classes } = this.props;
     return (
       <div className={ classes.container }>
-        {allItems.map((item, index) => <ShortItem item={ item } key={ index } />)}
+        {Object.values(allItems).map((item, index) => <ShortItem item={ item } key={ index } />)}
       </div>
     );
   }

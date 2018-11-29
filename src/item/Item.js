@@ -23,6 +23,7 @@ import Button from '@material-ui/core/Button'
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as itemsActions from './itemsActions.js';
+import { withRouter} from 'react-router'
 
 const styles = theme => ({
   card: {
@@ -93,7 +94,8 @@ class Item extends React.Component {
   };
 
   componentWillMount() {
-    this.props.itemsActions.getAll();
+    const itemId = this.props.match.params.id;
+    this.props.itemsActions.getById(itemId);
   }
 
   handleCardFlip = () => {
@@ -138,8 +140,7 @@ class Item extends React.Component {
   };
 
   render() {
-    const { items, classes, match } = this.props;
-    const item = items.filter(item => item.id == match.params.id)[0]
+    const { item, classes } = this.props;
     return (
       <React.Fragment>
         {item &&
@@ -220,9 +221,10 @@ class Item extends React.Component {
   }
 }
 
-function mapStateToProps({ items }) {
+const mapStateToProps = ({items}, {match} )=> {
+  const itemId = match.params.id;
   return {
-    items: items.allItems,
+    item: items.allItems[itemId]
   };
 }
 
@@ -232,4 +234,4 @@ const mapDispatchToProps = dispatch => {
     itemsActions: bindActionCreators(itemsActions, dispatch),
   };
 };
-export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(Item));
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(Item)));

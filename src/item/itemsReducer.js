@@ -1,7 +1,8 @@
 export const ITEMS_UPDATED = '@item/ITEMS_UPDATED';
+export const UPDATE_SINGLE_ITEM = '@item/UPDATE_SINGLE_ITEM';
 
 export const DEFAULT_STATE = {
-  allItems: [],
+  allItems: {},
   listeningToItem: false,
   isLoading: true,
 };
@@ -13,6 +14,14 @@ export default (state = DEFAULT_STATE, { type, payload }) => {
         ...state,
         allItems: payload,
       };
+    case UPDATE_SINGLE_ITEM:
+      return {
+        ...state,
+        allItems: {
+          ...state.allItems,
+          [payload.id]: payload
+        }
+      }
     default:
       return state;
   }
