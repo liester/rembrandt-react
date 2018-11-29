@@ -17,6 +17,7 @@ import FavoriteIcon from '@material-ui/icons/Favorite';
 import ShareIcon from '@material-ui/icons/Share';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
+import {history} from '../common/storeConfig.js'
 import VisibleIcon from '@material-ui/icons/Visibility';
 import Flippy, { FrontSide, BackSide } from 'react-flippy';
 import Info from '@material-ui/icons/Info';
@@ -133,6 +134,25 @@ class Item extends React.Component {
     const { item, classes } = this.props;
     return (
       <Card className={ classes.card }>
+        <CardHeader
+          avatar={
+            <Avatar aria-label="Recipe" className={ classes.avatar } onClick={()=>history.push(`/item/${item.id}`)}>
+              R
+            </Avatar>
+          }
+          action={
+            <IconButton>
+              <MoreVertIcon />
+            </IconButton>
+          }
+          title={ item.title }
+          subheader={ item.auctionCompany }
+        />
+        <CardMedia
+          className={ classes.media }
+          image={ item.imageUrl }
+          title={ item.title }
+        />
       <Flippy
     flipOnHover={false} // default false
     flipOnClick={false} // default false
