@@ -86,7 +86,10 @@ class ResponsiveDrawer extends React.Component {
                 <List>
                     {menuItems.map(item => {
                         return (
-                            <ListItem button key={item.label} onClick={() => history.push(item.path)}>
+                            <ListItem button key={item.label} onClick={() => {
+                                history.push(item.path)
+                                this.handleDrawerToggle()
+                            }}>
                                 <ListItemIcon>{item.icon}</ListItemIcon>
                                 <ListItemText>{item.label}</ListItemText>
                             </ListItem>

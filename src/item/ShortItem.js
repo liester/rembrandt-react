@@ -18,7 +18,6 @@ const styles = theme => ({
   },
   card: {
     display: 'flex',
-    height: '154px',
     marginTop: '10px',
     width: "100%",
     maxWidth: '330px',
