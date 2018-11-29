@@ -19,8 +19,8 @@ class App extends React.Component {
               <Router history={history}>
                   <Switch>
                     <Route exact path="/" component={AllItems} />
-                    <Route exact path="/item" render={() => {
-                      return 'Item page'
+                    <Route exact path="/item/:id" render={() => {
+                      return 'Item page';
                     }} />
                   </Switch>
               </Router>

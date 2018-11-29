@@ -12,6 +12,9 @@ import green from "@material-ui/core/colors/green";
 import FavoriteIcon from "@material-ui/icons/Favorite";
 import classnames from "classnames";
 import CardActions from "@material-ui/core/CardActions/CardActions";
+import {Link} from "react-router-dom";
+import { push } from 'react-router-redux'
+import {history} from "../common/storeConfig";
 
 const styles = theme => ({
   actions: {
@@ -117,9 +120,10 @@ class ShortItem extends Component {
               className={classes.cover}
               image={item.imageUrl}
               title={item.title}
+              onClick={()=>history.push(`/item/${item.id}`)}
           />
           <div className={classes.details}>
-            <CardContent className={classes.content}>
+            <CardContent className={classes.content} onClick={()=>history.push(`/item/${item.id}`)}>
               <Typography component="h6" variant="h6">
                 {trimText(item.title, 20)}
               </Typography>
