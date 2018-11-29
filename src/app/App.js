@@ -8,6 +8,7 @@ import { history } from '../common/storeConfig.js'
 import { storeConfig } from '../common/storeConfig';
 import theme from '../common/theme';
 import AllItems from '../item/AllItems';
+import Item from '../item/Item.js';
 
 class App extends React.Component {
   render() {
@@ -19,9 +20,7 @@ class App extends React.Component {
               <Router history={history}>
                   <Switch>
                     <Route exact path="/" component={AllItems} />
-                    <Route exact path="/item/:id" render={() => {
-                      return 'Item page';
-                    }} />
+                    <Route exact path="/item/:id" component={Item} />
                   </Switch>
               </Router>
             </ResponsiveDrawer>
