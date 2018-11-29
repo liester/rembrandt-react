@@ -10,10 +10,6 @@ import {trimText} from "../utils";
 import red from "@material-ui/core/colors/red";
 import green from "@material-ui/core/colors/green";
 import FavoriteIcon from "@material-ui/icons/Favorite";
-import classnames from "classnames";
-import CardActions from "@material-ui/core/CardActions/CardActions";
-import {Link} from "react-router-dom";
-import { push } from 'react-router-redux'
 import {history} from "../common/storeConfig";
 
 const styles = theme => ({
@@ -59,6 +55,12 @@ const styles = theme => ({
   itemAvailable: {
     color: green[500],
   },
+  itemFavorited: {
+    color: red[300],
+  },
+  itemSold: {
+    color: red[500],
+  }
 });
 
 // https://cdn-az.allevents.in/banners/bf3d43247e063472a0f82054176a2b71-rimg-w720-h479-gmir.jpg
@@ -69,15 +71,23 @@ class ShortItem extends Component {
 
   interval = null;
 
+  handleFavoriteClick = () => {
+    this.setState(state => ({ itemFavorited: !state.itemFavorited }));
+  };
+
   renderStatus = (status, classes) => {
     if (status === 'AVAILABLE') {
       return (
           <span className={classes.itemAvailable}>Available</span>
       );
-    } else {
+    } else if (status === 'PASSED'){
       return (
           <span className={classes.itemPassed}>Passed</span>
-      );
+      )
+    } else {
+      return (
+          <span className={classes.itemSold}>Sold</span>
+      )
     }
   };
 
@@ -146,7 +156,8 @@ class ShortItem extends Component {
               <div>
                 <IconButton aria-label="Add to favorites"
                             className={classes.icon}>
-                  <FavoriteIcon/>
+                  <FavoriteIcon className={{[classes.itemFavorited]: this.state.itemFavorited}}
+                  onClick={this.handleFavoriteClick}/>
                 </IconButton>
               </div>
             </div>

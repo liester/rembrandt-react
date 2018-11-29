@@ -21,6 +21,7 @@ import {history} from '../common/storeConfig.js'
 import VisibleIcon from '@material-ui/icons/Visibility';
 import Flippy, { FrontSide, BackSide } from 'react-flippy';
 import Info from '@material-ui/icons/Info';
+import Button from '@material-ui/core/Button'
 
 const styles = theme => ({
   card: {
@@ -85,26 +86,23 @@ class Item extends React.Component {
     classes: PropTypes.object.isRequired,
   };
 
-  state = { expanded: false,
-            isFlipped: false
+  state = {
+    expanded: false,
+    isFlipped: false
   };
 
-  handleCardFlip = () => {
-    this.setState(prevState => ({ isFlipped: !prevState.isFlipped}));
-  }
-
   handleExpandClick = () => {
-    this.setState(state => ({ expanded: !state.expanded }));
+    this.setState(state => ({expanded: !state.expanded}));
   };
 
   renderStatus = (status, classes) => {
     if (status === 'AVAILABLE') {
       return (
-        <span className={ classes.itemAvailable }>Available</span>
+          <span className={classes.itemAvailable}>Available</span>
       );
     } else {
       return (
-        <span className={ classes.itemPassed }>Passed</span>
+          <span className={classes.itemPassed}>Passed</span>
       );
     }
   };
@@ -118,121 +116,125 @@ class Item extends React.Component {
   };
 
   renderTotalViewers = (totalViewers, classes) => {
-    if(totalViewers > 5){
-    return (
-      <div className={classes.watchingBlock}>
-          <VisibleIcon className={classes.watchingIcon}/>
-          <span className={classes.watchingText}>&nbsp;&nbsp;{totalViewers}+ viewers!</span>
-      </div>
-    )
+    if (totalViewers > 5) {
+      return (
+          <div className={classes.watchingBlock}>
+            <VisibleIcon className={classes.watchingIcon}/>
+            <span className={classes.watchingText}>&nbsp;&nbsp;{totalViewers}+ viewers!</span>
+          </div>
+      )
     } else {
       return null
-    };
+    }
   };
 
   render() {
-    const { item, classes } = this.props;
+    const {item, classes} = this.props;
     return (
-      <Card className={ classes.card }>
-        <CardHeader
-          avatar={
-            <Avatar aria-label="Recipe" className={ classes.avatar } onClick={()=>history.push(`/item/${item.id}`)}>
-              R
-            </Avatar>
-          }
-          action={
-            <IconButton>
-              <MoreVertIcon />
-            </IconButton>
-          }
-          title={ item.title }
-          subheader={ item.auctionCompany }
-        />
-        <CardMedia
-          className={ classes.media }
-          image={ item.imageUrl }
-          title={ item.title }
-        />
-      <Flippy
-    flipOnHover={false} // default false
-    flipOnClick={false} // default false
-    flipDirection="horizontal" // horizontal or vertical
-    ref={(r) => this.flippy = r} // to use toggle method like this.flippy.toggle()
-    // if you pass isFlipped prop component will be controlled component.
-    // and other props, which will go to div
-      >
-          <FrontSide className={classes.noShadow}>
+        <Card className={classes.card}>
           <CardHeader
-            avatar={
-              <Avatar aria-label="Recipe" className={ classes.avatar }>
-                R
-              </Avatar>
-            }
-            action={
-              <IconButton onClick={() => this.flippy.toggle()}>
-                <Info/>
-              </IconButton>
-            }
-            title={ item.title }
-            subheader={ item.auctionCompany }
+              avatar={
+                <Avatar aria-label="Recipe" className={classes.avatar}
+                        onClick={() => history.push(`/item/${item.id}`)}>
+                  R
+                </Avatar>
+              }
+              action={
+                <IconButton>
+                  <MoreVertIcon/>
+                </IconButton>
+              }
+              title={item.title}
+              subheader={item.auctionCompany}
           />
           <CardMedia
-            className={ classes.media }
-            image={ item.imageUrl }
-            title={ item.title }
+              className={classes.media}
+              image={item.imageUrl}
+              title={item.title}
           />
-          </FrontSide>
-          <BackSide className={classes.noShadow}>
-          <IconButton onClick={() => this.flippy.toggle()}>
-            <Info className={classes.infoButton}/>
-          </IconButton>
+          <Flippy
+              flipOnHover={false} // default false
+              flipOnClick={false} // default false
+              flipDirection="horizontal" // horizontal or vertical
+              ref={(r) => this.flippy = r} // to use toggle method like this.flippy.toggle()
+              // if you pass isFlipped prop component will be controlled component.
+              // and other props, which will go to div
+          >
+            <FrontSide className={classes.noShadow}>
+              <CardHeader
+                  avatar={
+                    <Avatar aria-label="Recipe" className={classes.avatar}>
+                      R
+                    </Avatar>
+                  }
+                  action={
+                    <IconButton onClick={() => this.flippy.toggle()}>
+                      <Info/>
+                    </IconButton>
+                  }
+                  title={item.title}
+                  subheader={item.auctionCompany}
+              />
+              <CardMedia
+                  className={classes.media}
+                  image={item.imageUrl}
+                  title={item.title}
+              />
+            </FrontSide>
+            <BackSide className={classes.noShadow}>
+              <IconButton onClick={() => this.flippy.toggle()}>
+                <Info className={classes.infoButton}/>
+              </IconButton>
+              <CardContent>
+                <Typography paragraph>Description:</Typography>
+                <Typography paragraph>
+                  {item.description}
+                </Typography>
+              </CardContent>
+            </BackSide>
+          </Flippy>
           <CardContent>
+            <Typography variant="h5">
+              Current Price: ${item.currentPrice}
+            </Typography>
+            <Typography>
+              {this.renderTimeRemaining(item.secondsUntilDecrease)}
+            </Typography>
+            <Typography>
+              {this.renderStatus(item.status, classes)}
+            </Typography>
+          </CardContent>
+          <CardActions className={classes.actions} disableActionSpacing>
+            <IconButton aria-label="Add to favorites">
+              <FavoriteIcon/>
+            </IconButton>
+            <IconButton aria-label="Share">
+              <ShareIcon/>
+            </IconButton>
+            <Button className={classes.buyButton}>
+              Buy Now
+            </Button>
+            {this.renderTotalViewers(item.totalViews, classes)}
+            <IconButton
+                className={classnames(classes.expand, {
+                  [classes.expandOpen]: this.state.expanded,
+                })}
+                onClick={this.handleExpandClick}
+                aria-expanded={this.state.expanded}
+                aria-label="Show more"
+            >
+              <ExpandMoreIcon/>
+            </IconButton>
+          </CardActions>
+          <Collapse in={this.state.expanded} timeout="auto" unmountOnExit>
+            <CardContent>
               <Typography paragraph>Description:</Typography>
               <Typography paragraph>
                 {item.description}
               </Typography>
             </CardContent>
-          </BackSide>
-          </Flippy>
-        <CardContent>
-          <Typography variant="h5">
-            Current Price: ${item.currentPrice}
-          </Typography>
-          <Typography>
-            {this.renderTimeRemaining(item.secondsUntilDecrease)}
-          </Typography>
-          <Typography>
-            {this.renderStatus(item.status, classes)}
-          </Typography>
-        </CardContent>
-        <CardActions className={ classes.actions } disableActionSpacing>
-          <IconButton aria-label="Add to favorites">
-            <FavoriteIcon />
-          </IconButton>
-          <IconButton aria-label="Share">
-            <ShareIcon />
-          </IconButton>
-          {this.renderTotalViewers(item.totalViews,classes)}
-          <IconButton
-            className={ classnames(classes.expand, {
-              [classes.expandOpen]: this.state.expanded,
-            }) }
-            onClick={ this.handleExpandClick }
-            aria-expanded={ this.state.expanded }
-            aria-label="Show more"
-          >
-            <ExpandMoreIcon />
-          </IconButton>
-        </CardActions>
-        <Collapse in={ this.state.expanded } timeout="auto" unmountOnExit>
-          <CardContent>
-            <Typography paragraph>Description:</Typography>
-            <Typography paragraph>
-              {item.description}
-            </Typography>
-          </CardContent>
-        </Collapse>
-      </Card>
+          </Collapse>
+        </Card>
     );
   }
 }
