@@ -82,9 +82,6 @@ const styles = theme => ({
     color: red[300],
   },
   buyButton: {
-    backgroundColor: green[500],
-    boxShadow: '1px 1px 3px #ccc',
-    color: 'white',
     margin: '0 auto',
     marginTop: 20,
   },
@@ -224,7 +221,7 @@ class Item extends React.Component {
               <Typography variant="h5">
                 Current Price: ${item.currentPrice}
               </Typography>
-              <Button className={classes.buyButton} onClick={() => {
+              <Button variant="contained" color="primary" className={classes.buyButton} onClick={() => {
                 this.buyItem('CpNjxLIJok3BCGoT9EGZ', 8675309)
               }}>
                 Buy This!
