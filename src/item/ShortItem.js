@@ -6,14 +6,17 @@ import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
-import SkipPreviousIcon from '@material-ui/icons/SkipPrevious';
-import PlayArrowIcon from '@material-ui/icons/PlayArrow';
-import SkipNextIcon from '@material-ui/icons/SkipNext';
 import {trimText} from "../utils";
 import red from "@material-ui/core/colors/red";
 import green from "@material-ui/core/colors/green";
+import FavoriteIcon from "@material-ui/icons/Favorite";
+import classnames from "classnames";
+import CardActions from "@material-ui/core/CardActions/CardActions";
 
 const styles = theme => ({
+  actions: {
+    display: 'flex',
+  },
   card: {
     display: 'flex',
     height: '154px',
@@ -32,6 +35,7 @@ const styles = theme => ({
   },
   controls: {
     display: 'flex',
+    flexDirection: 'row',
     alignItems: 'stretch',
     paddingLeft: theme.spacing.unit,
     paddingBottom: theme.spacing.unit,
@@ -44,6 +48,11 @@ const styles = theme => ({
   itemPassed: {
     color: red[500],
   },
+  icon: {
+    display: 'flex',
+    alignItems: 'flex-end',
+    justifyContent: 'flex-start'
+  },
   itemAvailable: {
     color: green[500],
   },
@@ -53,15 +62,40 @@ const styles = theme => ({
 
 class ShortItem extends Component {
 
+  state = {countdownTextColor: 'textPrimary'};
+
+  interval = null;
+
   renderStatus = (status, classes) => {
     if (status === 'AVAILABLE') {
       return (
-          <span className={ classes.itemAvailable }>Available</span>
+          <span className={classes.itemAvailable}>Available</span>
       );
     } else {
       return (
-          <span className={ classes.itemPassed }>Passed</span>
+          <span className={classes.itemPassed}>Passed</span>
       );
+    }
+  };
+
+  flashRedInFinalSeconds = (secondsLeft) => {
+    const startFlashingAt = 60;
+    if (secondsLeft < startFlashingAt && this.interval == null) {
+      this.interval = setInterval(this.toggleCountdownTextColor(), 250);
+    }
+    else if (secondsLeft >= startFlashingAt && this.interval !== null) {
+      clearInterval(this.interval);
+      this.interval = null;
+    }
+
+  };
+
+  toggleCountdownTextColor = () => {
+    if (this.state.countdownTextColor === 'textPrimary') {
+      this.setState(state => ({countdownTextColor: 'error'}));
+    }
+    else {
+      this.setState(state => ({countdownTextColor: 'textPrimary'}));
     }
   };
 
@@ -70,11 +104,12 @@ class ShortItem extends Component {
     //   return 'Price Drop In: a second';
     // }
     // return `Price Drop In: ${moment.duration(remainingTimeInSeconds, 'seconds').humanize()}`;
+    this.flashRedInFinalSeconds(remainingTimeInSeconds);
     return `drops in: ${remainingTimeInSeconds} seconds`;
   };
 
   render() {
-    const { key, item, classes, theme } = this.props;
+    const {key, item, classes, theme} = this.props;
 
     return (
         <Card className={classes.card}>
@@ -86,24 +121,30 @@ class ShortItem extends Component {
           <div className={classes.details}>
             <CardContent className={classes.content}>
               <Typography component="h6" variant="h6">
-                {trimText(item.title, 18)}
+                {trimText(item.title, 20)}
               </Typography>
               <Typography variant="subtitle1" color="textSecondary">
-                {trimText(item.description, 28)}
+                {trimText(item.description, 20)}
               </Typography>
             </CardContent>
             <div className={classes.controls}>
               <div className={classes.countDown}>
-              <Typography variant="h5">
-                ${item.currentPrice}
-              </Typography>
-              <Typography>
-                {this.renderTimeRemaining(item.secondsUntilDecrease)}
-              </Typography>
+                <Typography variant="h5">
+                  ${item.currentPrice}
+                </Typography>
+                <Typography color={this.state.countdownTextColor}>
+                  {this.renderTimeRemaining(item.secondsUntilDecrease)}
+                </Typography>
                 <Typography>
                   {this.renderStatus(item.status, classes)}
                 </Typography>
-            </div>
+              </div>
+              <div>
+                <IconButton aria-label="Add to favorites"
+                            className={classes.icon}>
+                  <FavoriteIcon/>
+                </IconButton>
+              </div>
             </div>
           </div>
         </Card>
