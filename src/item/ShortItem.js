@@ -111,13 +111,15 @@ class ShortItem extends Component {
     }
   };
 
-  renderTimeRemaining = remainingTimeInSeconds => {
+  renderTimeRemaining = (remainingTimeInSeconds, status) => {
     // if (remainingTimeInSeconds === 1) {
     //   return 'Price Drop In: a second';
     // }
     // return `Price Drop In: ${moment.duration(remainingTimeInSeconds, 'seconds').humanize()}`;
+    if(status === 'AVAILABLE'){
     this.flashRedInFinalSeconds(remainingTimeInSeconds);
-    return `drops in: ${remainingTimeInSeconds} seconds`;
+    return `drops in: ${remainingTimeInSeconds} seconds`;}
+    return '';
   };
 
   render() {
@@ -146,18 +148,18 @@ class ShortItem extends Component {
                   ${item.currentPrice}
                 </Typography>
                 <Typography color={this.state.countdownTextColor}>
-                  {this.renderTimeRemaining(item.secondsUntilDecrease)}
+                  {this.renderTimeRemaining(item.secondsUntilDecrease, item.status)}
                 </Typography>
                 <Typography>
                   {this.renderStatus(item.status, classes)}
                 </Typography>
               </div>
               <div>
-                <IconButton aria-label="Add to favorites"
+                { item.status === 'AVAILABLE' && <IconButton aria-label="Add to favorites"
                             className={classes.icon}>
                   <FavoriteIcon className={{[classes.itemFavorited]: this.state.itemFavorited}}
                   onClick={this.handleFavoriteClick}/>
-                </IconButton>
+                </IconButton>}
               </div>
             </div>
           </div>
