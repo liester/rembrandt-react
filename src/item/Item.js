@@ -100,12 +100,6 @@ const styles = theme => ({
 });
 
 class Item extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      isButtonDisabled: false,
-    }
-  }
 
   static propTypes = {
     item: PropTypes.object.isRequired,
@@ -167,8 +161,8 @@ class Item extends React.Component {
     }
   };
 
-  buyItem = (itemId, buyerId) => {
-    this.props.itemsActions.buyItemById(itemId, buyerId);
+  buyItem = (item, buyerId) => {
+    this.props.itemsActions.buyItemById(item.id, buyerId);
   };
 
   render() {
@@ -226,8 +220,10 @@ class Item extends React.Component {
               <Typography variant="h5">
                 Current Price: ${item.currentPrice}
               </Typography>
-              <Button variant="contained" color="primary" className={classes.buyButton} onClick={() => {
-                this.buyItem('CpNjxLIJok3BCGoT9EGZ', 8675309)
+                  <Button variant="contained" color="primary"
+                          disabled={item.status !== 'AVAILABLE'}
+                          className={classes.buyButton} onClick={() => {
+                this.buyItem(item, 8675309)
               }}>
                 Buy This!
               </Button>
