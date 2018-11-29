@@ -7,8 +7,12 @@ import thunk from 'redux-thunk';
 import reduxLogger from 'redux-logger';
 import appConfig from '../app/appConfig';
 import itemDuck from '../item/itemsReducer';
+import authentication from '../common/authenticationReducer.js';
 
-const reducers = { items: itemDuck };
+const reducers = {
+  items: itemDuck,
+  authentication
+};
 
 const loggerMiddleware = appConfig.reduxLoggerEnabled ? [reduxLogger] : [];
 

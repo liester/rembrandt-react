@@ -4,6 +4,7 @@ import { MuiThemeProvider } from '@material-ui/core/styles';
 import ResponsiveDrawer from './ResponsiveDrawer.js'
 import { Switch, Router, BrowserRouter, Route } from 'react-router-dom';
 import { history } from '../common/storeConfig.js'
+import EnsureAuthenticated from './EnsureAuthenticated.js';
 
 import { storeConfig } from '../common/storeConfig';
 import theme from '../common/theme';
@@ -19,11 +20,13 @@ class App extends React.Component {
           <Provider store={storeConfig}>
             <ResponsiveDrawer>
               <Router history={history}>
+                <EnsureAuthenticated>
                   <Switch>
                     <Route exact path="/" component={AllItems} />
                     <Route exact path="/item/:id" component={Item} />
                     <Route exact path="/buyer/:buyerId" component={Buyer} />
                   </Switch>
+                </EnsureAuthenticated>
               </Router>
             </ResponsiveDrawer>
           </Provider>
