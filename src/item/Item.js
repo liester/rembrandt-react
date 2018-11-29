@@ -81,6 +81,9 @@ const styles = theme => ({
   itemFavorited: {
     color: red[300],
   },
+  itemSold: {
+    color: red[500],
+  },
   buyButton: {
     margin: '0 auto',
     marginTop: 20,
@@ -97,6 +100,13 @@ const styles = theme => ({
 });
 
 class Item extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      isButtonDisabled: false,
+    }
+  }
+
   static propTypes = {
     item: PropTypes.object.isRequired,
     classes: PropTypes.object.isRequired,
