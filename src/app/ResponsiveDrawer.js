@@ -72,7 +72,7 @@ class ResponsiveDrawer extends React.Component {
         },
         {
             label: 'My Items',
-            path: '/myitems',
+            path: '/buyer/8675309',
             icon: (<Badge color="primary" badgeContent={4}>
                 <ShoppingCartIcon />
             </Badge>)

@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import Item from '../item/Item';
 import * as itemsActions from '../item/itemsActions.js';
 import SimpleItem from "../item/SimpleItem.js";
-//import ShortItem from "../item/ShortItem";
+import ShortItem from "../item/ShortItem";
 
 const styles = {
   container: {
@@ -31,13 +31,12 @@ class Buyer extends React.Component {
     const { allItems, classes } = this.props;
     const buyerId = this.props.match.params.buyerId;
     const buyerItems = Object.values(allItems).filter((item) => {
-        return item.soldToBuyerId === buyerId;
+        return item.soldToBuyerId == buyerId;
     })
 
-    debugger 
     return (
       <div className={ classes.container }>
-        {Object.values(buyerItems).map((item, index) => <SimpleItem item={ item } key={ index } />)}
+        {Object.values(buyerItems).map((item, index) => <ShortItem item={ item } key={ index } />)}
       </div>
     );
   }
