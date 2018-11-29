@@ -21,6 +21,7 @@ const styles = theme => ({
     height: '154px',
     marginTop: '10px',
     width: "100%",
+    maxWidth: '330px',
   },
   details: {
     display: 'flex',
