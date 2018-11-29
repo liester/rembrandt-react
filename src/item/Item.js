@@ -18,6 +18,8 @@ import ShareIcon from '@material-ui/icons/Share';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import VisibleIcon from '@material-ui/icons/Visibility';
+import Flippy, { FrontSide, BackSide } from 'react-flippy';
+import Info from '@material-ui/icons/Info';
 
 const styles = theme => ({
   card: {
@@ -65,7 +67,15 @@ const styles = theme => ({
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
- },
+  },
+  noShadow: {
+    boxShadow: 'none',
+  },
+  infoButton: {
+    position: 'fixed',
+    top: 30,
+    right: 30,
+  }
 });
 
 class Item extends React.Component {
@@ -74,7 +84,13 @@ class Item extends React.Component {
     classes: PropTypes.object.isRequired,
   };
 
-  state = { expanded: false };
+  state = { expanded: false,
+            isFlipped: false
+  };
+
+  handleCardFlip = () => {
+    this.setState(prevState => ({ isFlipped: !prevState.isFlipped}));
+  }
 
   handleExpandClick = () => {
     this.setState(state => ({ expanded: !state.expanded }));
@@ -117,25 +133,47 @@ class Item extends React.Component {
     const { item, classes } = this.props;
     return (
       <Card className={ classes.card }>
-        <CardHeader
-          avatar={
-            <Avatar aria-label="Recipe" className={ classes.avatar }>
-              R
-            </Avatar>
-          }
-          action={
-            <IconButton>
-              <MoreVertIcon />
-            </IconButton>
-          }
-          title={ item.title }
-          subheader={ item.auctionCompany }
-        />
-        <CardMedia
-          className={ classes.media }
-          image={ item.imageUrl }
-          title={ item.title }
-        />
+      <Flippy
+    flipOnHover={false} // default false
+    flipOnClick={false} // default false
+    flipDirection="horizontal" // horizontal or vertical
+    ref={(r) => this.flippy = r} // to use toggle method like this.flippy.toggle()
+    // if you pass isFlipped prop component will be controlled component.
+    // and other props, which will go to div
+      >
+          <FrontSide className={classes.noShadow}>
+          <CardHeader
+            avatar={
+              <Avatar aria-label="Recipe" className={ classes.avatar }>
+                R
+              </Avatar>
+            }
+            action={
+              <IconButton onClick={() => this.flippy.toggle()}>
+                <Info/>
+              </IconButton>
+            }
+            title={ item.title }
+            subheader={ item.auctionCompany }
+          />
+          <CardMedia
+            className={ classes.media }
+            image={ item.imageUrl }
+            title={ item.title }
+          />
+          </FrontSide>
+          <BackSide className={classes.noShadow}>
+          <IconButton onClick={() => this.flippy.toggle()}>
+            <Info className={classes.infoButton}/>
+          </IconButton>
+          <CardContent>
+              <Typography paragraph>Description:</Typography>
+              <Typography paragraph>
+                {item.description}
+              </Typography>
+            </CardContent>
+          </BackSide>
+          </Flippy>
         <CardContent>
           <Typography variant="h5">
             Current Price: ${item.currentPrice}
