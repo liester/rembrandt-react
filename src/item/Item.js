@@ -17,11 +17,11 @@ import ShareIcon from '@material-ui/icons/Share';
 import VisibleIcon from '@material-ui/icons/Visibility';
 import Flippy, { FrontSide, BackSide } from 'react-flippy';
 import Info from '@material-ui/icons/Info';
-import Button from '@material-ui/core/Button'
+import Button from '@material-ui/core/Button';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as itemsActions from './itemsActions.js';
-import { withRouter} from 'react-router'
+import { withRouter} from 'react-router';
 
 const styles = theme => ({
   card: {
@@ -112,10 +112,6 @@ class Item extends React.Component {
     this.props.itemsActions.getById(itemId);
   }
 
-  handleCardFlip = () => {
-    this.setState(prevState => ({ isFlipped: !prevState.isFlipped }));
-  }
-
   handleExpandClick = () => {
     this.setState(state => ({expanded: !state.expanded}));
   };
@@ -162,9 +158,8 @@ class Item extends React.Component {
   };
 
   buyItem = (itemId, buyerId) => {
-    console.log('hello')
-    this.props.itemsActions.buyItemById(itemId, buyerId)
-  }
+    this.props.itemsActions.buyItemById(itemId, buyerId);
+  };
 
   render() {
     const { item, classes } = this.props;
