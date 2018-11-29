@@ -190,9 +190,9 @@ class Item extends React.Component {
               <Typography variant="h5">
                 Current Price: ${item.currentPrice}
               </Typography>
-              <Typography>
+              {/* <Typography>
                 {this.renderTimeRemaining(item.secondsUntilDecrease)}
-              </Typography>
+              </Typography> */}
               <Typography>
                 {this.renderStatus(item.status, classes)}
               </Typography>
