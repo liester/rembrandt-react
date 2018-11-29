@@ -64,7 +64,6 @@ const styles = theme => ({
   }
 });
 
-// https://cdn-az.allevents.in/banners/bf3d43247e063472a0f82054176a2b71-rimg-w720-h479-gmir.jpg
 
 class ShortItem extends Component {
 

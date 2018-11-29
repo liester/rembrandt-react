@@ -7,7 +7,6 @@ import CardHeader from '@material-ui/core/CardHeader';
 import CardMedia from '@material-ui/core/CardMedia';
 import CardContent from '@material-ui/core/CardContent';
 import CardActions from '@material-ui/core/CardActions';
-import Collapse from '@material-ui/core/Collapse';
 import Avatar from '@material-ui/core/Avatar';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
@@ -15,7 +14,6 @@ import red from '@material-ui/core/colors/red';
 import green from '@material-ui/core/colors/green';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import ShareIcon from '@material-ui/icons/Share';
-import { history } from '../common/storeConfig.js'
 import VisibleIcon from '@material-ui/icons/Visibility';
 import Flippy, { FrontSide, BackSide } from 'react-flippy';
 import Info from '@material-ui/icons/Info';
@@ -80,6 +78,9 @@ const styles = theme => ({
     top: 30,
     right: 30,
   },
+  itemFavorited: {
+    color: red[300],
+  },
   buyButton: {
     backgroundColor: green[500],
     boxShadow: '1px 1px 3px #ccc',
@@ -103,7 +104,7 @@ class Item extends React.Component {
     item: PropTypes.object.isRequired,
     classes: PropTypes.object.isRequired,
   };
-  
+
   state = {
     expanded: false,
     isFlipped: false
@@ -122,15 +123,23 @@ class Item extends React.Component {
     this.setState(state => ({expanded: !state.expanded}));
   };
 
+  handleFavoriteClick = () => {
+    this.setState(state => ({ itemFavorited: !state.itemFavorited }));
+  };
+
   renderStatus = (status, classes) => {
     if (status === 'AVAILABLE') {
       return (
         <span className={classes.itemAvailable}>Available</span>
       );
-    } else {
+    } else if (status === 'PASSED') {
       return (
         <span className={classes.itemPassed}>Passed</span>
       );
+    } else {
+      return (
+          <span className={classes.itemSold}>Sold</span>
+      )
     }
   };
 
@@ -223,12 +232,13 @@ class Item extends React.Component {
               {/* <Typography>
                 {this.renderTimeRemaining(item.secondsUntilDecrease)}
               </Typography> */}
-              
+
               </div>
             </CardContent>
             <CardActions className={classes.actions} disableActionSpacing>
               <IconButton aria-label="Add to favorites">
-                <FavoriteIcon />
+                <FavoriteIcon className={{[classes.itemFavorited]: this.state.itemFavorited}}
+                              onClick={this.handleFavoriteClick}/>
               </IconButton>
               <IconButton aria-label="Share">
                 <ShareIcon />
@@ -255,7 +265,7 @@ const mapStateToProps = ({items}, {match} )=> {
   return {
     item: items.allItems[itemId]
   };
-}
+};
 
 
 const mapDispatchToProps = dispatch => {
