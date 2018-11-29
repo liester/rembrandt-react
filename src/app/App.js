@@ -2,6 +2,8 @@ import React from 'react';
 import { Provider } from 'react-redux';
 import { MuiThemeProvider } from '@material-ui/core/styles';
 import ResponsiveDrawer from './ResponsiveDrawer.js'
+import { Switch, Router, BrowserRouter, Route } from 'react-router-dom';
+import { history } from '../common/storeConfig.js'
 
 import { storeConfig } from '../common/storeConfig';
 import theme from '../common/theme';
@@ -14,7 +16,14 @@ class App extends React.Component {
         <MuiThemeProvider theme={theme}>
           <Provider store={storeConfig}>
             <ResponsiveDrawer>
-              <AllItems/>
+              <Router history={history}>
+                  <Switch>
+                    <Route exact path="/" component={AllItems} />
+                    <Route exact path="/item" render={() => {
+                      return 'Item page'
+                    }} />
+                  </Switch>
+              </Router>
             </ResponsiveDrawer>
           </Provider>
         </MuiThemeProvider>
