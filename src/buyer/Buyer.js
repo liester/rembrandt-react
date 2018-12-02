@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import Item from '../item/Item';
 import * as itemsActions from '../item/itemsActions.js';
 import SimpleItem from "../item/SimpleItem.js";
 import ShortItem from "../item/ShortItem";

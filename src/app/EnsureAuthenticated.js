@@ -9,7 +9,11 @@ import Button from '@material-ui/core/Button';
 class EnsureAuthenticated extends React.Component {
 
     state = {
-        user: null
+        user: ""
+    }
+
+    handleValueChange = (e) => {
+        this.setState({user: e.target.value})
     }
 
     render() {
@@ -22,19 +26,20 @@ class EnsureAuthenticated extends React.Component {
             );
         } else {
             return (
-                <div style={{display: 'flex', alignContent:'center', flexDirection:'column'}}>
-                <TextField
-                    id="standard-dense"
-                    label="Who Der?"
-                    value = {this.state.user}
-                    margin="dense"
-                onChange={(e)=>{
-                    this.setState({user: e.target.value})
-                }}/>
-                <Button variant='contained' color='primary' onClick={(e)=>{
-                    this.props.authenticationActions.login(this.state.user)
-                }}>
-                Log In
+                <div style={{ display: 'flex', alignContent: 'center', flexDirection: 'column' }}>
+                    <TextField
+                        id="standard-dense"
+                        label="Who Der?"
+                        value={this.state.user}
+                        margin="dense"
+                        InputProps={{
+                            onChange: this.handleValueChange
+                        }}
+                    />
+                    <Button variant='contained' color='primary' onClick={(e) => {
+                        this.props.authenticationActions.login(this.state.user)
+                    }}>
+                        Log In
                 </Button>
                 </div>
             )
@@ -44,7 +49,6 @@ class EnsureAuthenticated extends React.Component {
 
 
 const mapStateToProps = ({ authentication }, { match }) => {
-    const itemId = match.params.id;
     return {
         user: authentication.user,
         isAuthenticated: !!authentication.user

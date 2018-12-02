@@ -16,6 +16,7 @@ import MenuIcon from '@material-ui/icons/Menu';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/core/styles';
+import withWidth from '@material-ui/core/withWidth';
 import Badge from '@material-ui/core/Badge';
 import { history } from '../common/storeConfig.js'
 
@@ -77,8 +78,7 @@ class ResponsiveDrawer extends React.Component {
                 <ShoppingCartIcon />
             </Badge>)
         }]
-        const { classes, theme } = this.props;
-
+        const { classes, theme, width } = this.props;
         const drawer = (
             <div>
                 <div className={classes.toolbar} />
@@ -88,7 +88,9 @@ class ResponsiveDrawer extends React.Component {
                         return (
                             <ListItem button key={item.label} onClick={() => {
                                 history.push(item.path)
-                                this.handleDrawerToggle()
+                                if (width === 'xs') {
+                                    this.handleDrawerToggle()
+                                }
                             }}>
                                 <ListItemIcon>{item.icon}</ListItemIcon>
                                 <ListItemText>{item.label}</ListItemText>
@@ -165,4 +167,4 @@ ResponsiveDrawer.propTypes = {
     theme: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles, { withTheme: true })(ResponsiveDrawer);
+export default withWidth()(withStyles(styles, { withTheme: true })(ResponsiveDrawer));

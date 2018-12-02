@@ -81,9 +81,6 @@ const styles = theme => ({
   itemFavorited: {
     color: red[300],
   },
-  itemSold: {
-    color: red[500],
-  },
   buyButton: {
     margin: '0 auto',
     marginTop: 20,

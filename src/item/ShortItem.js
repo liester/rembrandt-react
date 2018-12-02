@@ -116,14 +116,12 @@ class ShortItem extends Component {
     //   return 'Price Drop In: a second';
     // }
     // return `Price Drop In: ${moment.duration(remainingTimeInSeconds, 'seconds').humanize()}`;
-    if(status === 'AVAILABLE'){
-    this.flashRedInFinalSeconds(remainingTimeInSeconds);
-    return `drops in: ${remainingTimeInSeconds} seconds`;}
-    return '';
+    // this.flashRedInFinalSeconds(remainingTimeInSeconds);  -- Levi: This causes a this.setState to be called during the render method
+    return `drops in: ${remainingTimeInSeconds} seconds`;
   };
 
   render() {
-    const {key, item, classes, theme} = this.props;
+    const {item, classes} = this.props;
 
     return (
         <Card className={classes.card}>
@@ -157,7 +155,7 @@ class ShortItem extends Component {
               <div>
                 { item.status === 'AVAILABLE' && <IconButton aria-label="Add to favorites"
                             className={classes.icon}>
-                  <FavoriteIcon className={{[classes.itemFavorited]: this.state.itemFavorited}}
+                  <FavoriteIcon 
                   onClick={this.handleFavoriteClick}/>
                 </IconButton>}
               </div>
@@ -167,10 +165,5 @@ class ShortItem extends Component {
     );
   }
 }
-
-ShortItem.propTypes = {
-  classes: PropTypes.object.isRequired,
-  theme: PropTypes.object.isRequired,
-};
 
 export default withStyles(styles, {withTheme: true})(ShortItem);

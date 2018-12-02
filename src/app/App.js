@@ -2,7 +2,7 @@ import React from 'react';
 import { Provider } from 'react-redux';
 import { MuiThemeProvider } from '@material-ui/core/styles';
 import ResponsiveDrawer from './ResponsiveDrawer.js'
-import { Switch, Router, BrowserRouter, Route } from 'react-router-dom';
+import { Switch, Router, Route } from 'react-router-dom';
 import { history } from '../common/storeConfig.js'
 import EnsureAuthenticated from './EnsureAuthenticated.js';
 

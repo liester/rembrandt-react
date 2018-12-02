@@ -4,20 +4,19 @@ import {
     USER_SIGNED_OUT
 } from './authenticationReducer.js';
 import appConfig from '../app/appConfig.js';
-const userUrl = `${appConfig.apiBaseUrl}/user`;
+const authUrl = `${appConfig.apiBaseUrl}/auth`;
 
 export const login = (user) => {
     return dispatch => {
         return axios
-            .post(userUrl, {
+            .post(authUrl, {
                 user
             })
             .then(response => {
-                if (response.data) {
+                if (response.data && response.data.authenticated) {
                     dispatch({ type: USER_SIGNED_IN, payload: response.data });
-
                 } else {
-                    dispatch({ type: USER_SIGNED_OUT, payload: response.data });
+                    dispatch({ type: USER_SIGNED_OUT, payload: {} });
                 }
             })
             .catch(error => {

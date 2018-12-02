@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import {withStyles} from '@material-ui/core/styles';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
-import Item from './Item';
 import * as itemsActions from './itemsActions.js';
 import ShortItem from "./ShortItem";
 
@@ -17,7 +16,7 @@ const styles = {
 
 class AllItems extends React.Component {
   static propTypes = {
-    allItems: PropTypes.array.isRequired,
+    allItems: PropTypes.object.isRequired,
     classes: PropTypes.object.isRequired,
     itemsActions: PropTypes.object.isRequired,
   };
