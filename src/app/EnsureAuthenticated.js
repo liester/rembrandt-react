@@ -5,6 +5,30 @@ import * as authenticationActions from '../common/authenticationActions';
 import { withRouter } from 'react-router';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
+import axios from 'axios'
+
+import StyledFirebaseAuth from 'react-firebaseui/StyledFirebaseAuth';
+import firebase from 'firebase';
+const config = {
+    apiKey: 'AIzaSyBMqOH3UH86AX4Sx91eb4apmpIB8V0I3IE',
+    authDomain: 'jessica-3a11f.firebaseapp.com',
+    // ...
+};
+
+const app = firebase.initializeApp(config);
+const uiConfig = {
+    // Popup signin flow rather than redirect flow.
+    signInFlow: 'popup',
+    // We will display Google and Facebook as auth providers.
+    signInOptions: [
+        firebase.auth.EmailAuthProvider.PROVIDER_ID,
+        firebase.auth.GoogleAuthProvider.PROVIDER_ID
+    ],
+    callbacks: {
+        // Avoid redirects after sign-in.
+        signInSuccessWithAuthResult: () => false
+    }
+};
 
 class EnsureAuthenticated extends React.Component {
 
@@ -13,7 +37,25 @@ class EnsureAuthenticated extends React.Component {
     }
 
     handleValueChange = (e) => {
-        this.setState({user: e.target.value})
+        this.setState({ user: e.target.value })
+    }
+
+    // Listen to the Firebase Auth state and set the local state.
+    componentDidMount() {
+        this.unregisterAuthObserver = firebase.auth().onAuthStateChanged(
+            (user) => {
+                if (user) {
+                    user.getIdToken().then((idToken) => {
+                        axios.defaults.headers.common['Firebase-Auth'] = idToken;
+                        this.props.authenticationActions.login(user)
+                    })
+                }
+            })
+    }
+
+    // Make sure we un-register Firebase observers when the component unmounts.
+    componentWillUnmount() {
+        this.unregisterAuthObserver();
     }
 
     render() {
@@ -26,23 +68,9 @@ class EnsureAuthenticated extends React.Component {
             );
         } else {
             return (
-                <div style={{ display: 'flex', alignContent: 'center', flexDirection: 'column' }}>
-                    <TextField
-                        id="standard-dense"
-                        label="Who Der?"
-                        value={this.state.user}
-                        margin="dense"
-                        InputProps={{
-                            onChange: this.handleValueChange
-                        }}
-                    />
-                    <Button variant='contained' color='primary' onClick={(e) => {
-                        this.props.authenticationActions.login(this.state.user)
-                    }}>
-                        Log In
-                </Button>
-                </div>
+                <StyledFirebaseAuth uiConfig={uiConfig} firebaseAuth={firebase.auth()} />
             )
+
         }
     }
 }

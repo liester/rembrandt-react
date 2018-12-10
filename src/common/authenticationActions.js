@@ -8,19 +8,19 @@ const authUrl = `${appConfig.apiBaseUrl}/auth`;
 
 export const login = (user) => {
     return dispatch => {
-        return axios
-            .post(authUrl, {
-                user
-            })
-            .then(response => {
-                if (response.data && response.data.authenticated) {
-                    dispatch({ type: USER_SIGNED_IN, payload: response.data });
-                } else {
-                    dispatch({ type: USER_SIGNED_OUT, payload: {} });
-                }
-            })
-            .catch(error => {
-                throw error;
-            });
+        dispatch({ type: USER_SIGNED_IN, payload: user });
+        // return axios
+        //     .post(authUrl, {
+        //         user
+        //     })
+        //     .then(response => {
+        //         if (response.data && response.data.authenticated) {
+        //         } else {
+        //             dispatch({ type: USER_SIGNED_OUT, payload: {} });
+        //         }
+        //     })
+        //     .catch(error => {
+        //         throw error;
+        //     });
     };
 };
