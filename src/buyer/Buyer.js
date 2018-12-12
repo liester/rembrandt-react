@@ -17,7 +17,6 @@ const styles = {
 
 class Buyer extends React.Component {
   static propTypes = {
-    allItems: PropTypes.array.isRequired,
     classes: PropTypes.object.isRequired,
     itemsActions: PropTypes.object.isRequired,
   };
@@ -27,10 +26,10 @@ class Buyer extends React.Component {
   }
 
   render() {
-    const { allItems, classes } = this.props;
+    const { allItems, classes, userId } = this.props;
     const buyerId = this.props.match.params.buyerId;
     const buyerItems = Object.values(allItems).filter((item) => {
-        return item.soldToBuyerId == buyerId;
+        return item.soldToBidder == userId;
     })
 
     return (
@@ -41,9 +40,10 @@ class Buyer extends React.Component {
   }
 }
 
-function mapStateToProps({ items }) {
+function mapStateToProps({ items, authentication }) {
   return {
     allItems: items.allItems,
+    userId: authentication.user.uid
   };
 }
 
