@@ -38,10 +38,10 @@ export const getById = (itemId) => {
   };
 };
 
-export const buyItemById = (itemId, buyerId) => {
+export const buyItemById = (itemId) => {
   return dispatch => {
     return axios
-      .post(`${appConfig.apiBaseUrl}/item/buy?itemId=${itemId}&buyerId=${buyerId}`)
+      .put(`${appConfig.apiBaseUrl}/item/${itemId}/buy`)
       .then(response => {
         dispatch({ type: UPDATE_SINGLE_ITEM, payload: response.data });
       })

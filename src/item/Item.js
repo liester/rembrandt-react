@@ -162,8 +162,8 @@ class Item extends React.Component {
     }
   };
 
-  buyItem = (item, buyerId) => {
-    this.props.itemsActions.buyItemById(item.id, buyerId);
+  buyItem = (item) => {
+    this.props.itemsActions.buyItemById(item.id);
   };
 
   render() {
@@ -224,7 +224,7 @@ class Item extends React.Component {
                   <Button variant="contained" color="primary"
                           disabled={item.status !== 'AVAILABLE'}
                           className={classes.buyButton} onClick={() => {
-                this.buyItem(item, 8675309)
+                this.buyItem(item)
               }}>
                 Buy This!
               </Button>
