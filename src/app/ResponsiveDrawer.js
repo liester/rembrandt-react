@@ -19,6 +19,7 @@ import { withStyles } from '@material-ui/core/styles';
 import withWidth from '@material-ui/core/withWidth';
 import Badge from '@material-ui/core/Badge';
 import { history } from '../common/storeConfig.js'
+import {connect} from "react-redux";
 
 
 const drawerWidth = 240;
@@ -66,6 +67,7 @@ class ResponsiveDrawer extends React.Component {
 
 
     render() {
+      const { userId } = this.props;
         const menuItems = [{
             label: 'Home',
             path: '/',
@@ -73,7 +75,7 @@ class ResponsiveDrawer extends React.Component {
         },
         {
             label: 'My Items',
-            path: '/buyer/8675309',
+            path: `/buyer/${userId}`,
             icon: (<Badge color="primary" badgeContent={4}>
                 <ShoppingCartIcon />
             </Badge>)
@@ -167,4 +169,12 @@ ResponsiveDrawer.propTypes = {
     theme: PropTypes.object.isRequired,
 };
 
-export default withWidth()(withStyles(styles, { withTheme: true })(ResponsiveDrawer));
+function mapStateToProps({ authentication }) {
+    const { user } = authentication;
+    const userId = user ? user.uid : '';
+  return {
+    userId: userId
+  };
+}
+
+export default connect(mapStateToProps)(withStyles(styles, { withTheme: true })(ResponsiveDrawer));
