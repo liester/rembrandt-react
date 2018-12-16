@@ -19,7 +19,9 @@ import { withStyles } from '@material-ui/core/styles';
 import withWidth from '@material-ui/core/withWidth';
 import Badge from '@material-ui/core/Badge';
 import { history } from '../common/storeConfig.js'
-import {connect} from "react-redux";
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import * as authenticationActions from '../common/authenticationActions';
 
 
 const drawerWidth = 240;
@@ -46,7 +48,7 @@ const styles = theme => ({
             display: 'none',
         },
     },
-    toolbar: theme.mixins.toolbar,
+    toolbar: {...theme.mixins.toolbar},
     drawerPaper: {
         width: drawerWidth,
     },
@@ -80,10 +82,12 @@ class ResponsiveDrawer extends React.Component {
                 <ShoppingCartIcon />
             </Badge>)
         }]
-        const { classes, theme, width } = this.props;
+        const { classes, theme, width, user } = this.props;
         const drawer = (
             <div>
-                <div className={classes.toolbar} />
+                <div className={classes.toolbar}>
+                    {user && user.displayName}
+                </div>
                 <Divider />
                 <List>
                     {menuItems.map(item => {
@@ -114,16 +118,16 @@ class ResponsiveDrawer extends React.Component {
                             onClick={this.handleDrawerToggle}
                             className={classes.menuButton}
                         >
-                            <MenuIcon />
+                        <MenuIcon />
                         </IconButton>
                         <Typography variant="h6" color="inherit" noWrap>
                             Rembrandt
-            </Typography>
+                        </Typography>
                     </Toolbar>
                 </AppBar>
                 <nav className={classes.drawer}>
                     {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
-                    <Hidden smUp implementation="css">
+                    <Hidden smUp implementation="js">
                         <Drawer
                             container={this.props.container}
                             variant="temporary"
@@ -169,12 +173,28 @@ ResponsiveDrawer.propTypes = {
     theme: PropTypes.object.isRequired,
 };
 
-function mapStateToProps({ authentication }) {
-    const { user } = authentication;
-    const userId = user ? user.uid : '';
-  return {
-    userId: userId
-  };
-}
+const mapStateToProps = ({ authentication }) => {
+    return {
+        user: authentication.user,
+        isAuthenticated: !!authentication.user
+    };
+};
 
-export default connect(mapStateToProps)(withStyles(styles, { withTheme: true })(ResponsiveDrawer));
+
+const mapDispatchToProps = dispatch => {
+    return {
+        authenticationActions: bindActionCreators(authenticationActions, dispatch),
+    };
+};
+
+
+export default withWidth()(withStyles(styles, { withTheme: true })(connect(mapStateToProps, mapDispatchToProps)(ResponsiveDrawer)));
+// function mapStateToProps({ authentication }) {
+//     const { user } = authentication;
+//     const userId = user ? user.uid : '';
+//   return {
+//     userId: userId
+//   };
+// }
+
+// export default connect(mapStateToProps)(withStyles(styles, { withTheme: true })(ResponsiveDrawer));

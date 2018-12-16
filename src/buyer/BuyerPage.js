@@ -4,8 +4,7 @@ import { withStyles } from '@material-ui/core/styles';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import * as itemsActions from '../item/itemsActions.js';
-import SimpleItem from "../item/SimpleItem.js";
-import ShortItem from "../item/ShortItem";
+import ShortItem from "../item/ShortItem.js";
 
 const styles = {
   container: {
@@ -15,7 +14,7 @@ const styles = {
   },
 };
 
-class Buyer extends React.Component {
+class BuyerPage extends React.Component {
   static propTypes = {
     allItems: PropTypes.array.isRequired,
     classes: PropTypes.object.isRequired,
@@ -30,7 +29,7 @@ class Buyer extends React.Component {
     const { allItems, classes } = this.props;
     const buyerId = this.props.match.params.buyerId;
     const buyerItems = Object.values(allItems).filter((item) => {
-        return item.soldToBuyerId == buyerId;
+        return item.soldToBuyerId === buyerId;
     })
 
     return (
@@ -52,4 +51,4 @@ const mapDispatchToProps = dispatch => {
     itemsActions: bindActionCreators(itemsActions, dispatch),
   };
 };
-export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(Buyer));
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(BuyerPage));

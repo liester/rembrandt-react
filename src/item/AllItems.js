@@ -21,7 +21,7 @@ class AllItems extends React.Component {
     itemsActions: PropTypes.object.isRequired,
   };
 
-  componentWillMount() {
+  componentDidMount() {
     this.props.itemsActions.getAll();
     }
 

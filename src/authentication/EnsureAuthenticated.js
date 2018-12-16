@@ -3,8 +3,6 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as authenticationActions from '../common/authenticationActions';
 import { withRouter } from 'react-router';
-import TextField from '@material-ui/core/TextField';
-import Button from '@material-ui/core/Button';
 import axios from 'axios'
 
 import StyledFirebaseAuth from 'react-firebaseui/StyledFirebaseAuth';
@@ -32,10 +30,6 @@ const uiConfig = {
 
 class EnsureAuthenticated extends React.Component {
 
-    state = {
-        user: ""
-    }
-
     handleValueChange = (e) => {
         this.setState({ user: e.target.value })
     }
@@ -46,8 +40,9 @@ class EnsureAuthenticated extends React.Component {
             (user) => {
                 if (user) {
                     user.getIdToken().then((idToken) => {
+                        user.idToken = idToken;
                         axios.defaults.headers.common['Firebase-Auth'] = idToken;
-                        this.props.authenticationActions.login(user)
+                        this.props.authenticationActions.updateUser(user)
                     })
                 }
             })
