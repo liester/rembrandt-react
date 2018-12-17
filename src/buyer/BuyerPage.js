@@ -4,7 +4,10 @@ import { withStyles } from '@material-ui/core/styles';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import * as itemsActions from '../item/itemsActions.js';
-import ShortItem from "../item/ShortItem.js";
+import ShortItem from '../item/ShortItem.js';
+import Typography from '@material-ui/core/Typography';
+import Button from '@material-ui/core/Button';
+import { history } from '../common/storeConfig.js';
 
 const styles = {
   container: {
@@ -12,39 +15,60 @@ const styles = {
     flexWrap: 'wrap',
     justifyContent: 'space-around',
   },
+  muchEmpty: {
+    display: 'flex',
+    alignItems: 'center',
+    flexDirection: 'column',
+  },
 };
 
 class BuyerPage extends React.Component {
   static propTypes = {
-    allItems: PropTypes.array.isRequired,
+    allItems: PropTypes.object.isRequired,
     classes: PropTypes.object.isRequired,
     itemsActions: PropTypes.object.isRequired,
+    match: PropTypes.object.isRequired,
   };
 
   componentWillMount() {
     this.props.itemsActions.getAll();
   }
 
+  renderMuchEmpty = () => {
+    return (
+      <div className={ this.props.classes.muchEmpty }>
+        <img src="../images/travolta.gif" style={{ width: '100%' }} />
+        <Typography variant="h4" color="inherit" noWrap>
+          Wow, such empty.
+        </Typography>
+        <Button variant="contained" color="primary" onClick={ () => history.push('/') } >
+          What's for Sale?
+        </Button>
+      </div>
+    );
+  };
+
   render() {
     const { allItems, classes } = this.props;
-    const buyerId = this.props.match.params.buyerId;
-    const buyerItems = Object.values(allItems).filter((item) => {
-        return item.soldToBuyerId === buyerId;
-    })
+    const userId = this.props.match.params.userId;
+    const buyerItems = Object.values(allItems).filter(item => {
+      return item.soldTouserId === userId;
+    });
 
     return (
       <div className={ classes.container }>
+        {!buyerItems.length && this.renderMuchEmpty()}
         {Object.values(buyerItems).map((item, index) => <ShortItem item={ item } key={ index } />)}
       </div>
     );
   }
 }
 
-function mapStateToProps({ items }) {
+const mapStateToProps = ({ items }) => {
   return {
     allItems: items.allItems,
   };
-}
+};
 
 const mapDispatchToProps = dispatch => {
   return {

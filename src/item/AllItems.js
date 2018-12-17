@@ -1,10 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {withStyles} from '@material-ui/core/styles';
-import {bindActionCreators} from 'redux';
-import {connect} from 'react-redux';
+import { withStyles } from '@material-ui/core/styles';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
 import * as itemsActions from './itemsActions.js';
-import ShortItem from "./ShortItem";
+import ShortItem from './ShortItem';
 
 const styles = {
   container: {
@@ -23,7 +23,7 @@ class AllItems extends React.Component {
 
   componentDidMount() {
     this.props.itemsActions.getAll();
-    }
+  }
 
   // sortBy(key) {
   //   const {allItems} = this.props;
@@ -93,17 +93,17 @@ class AllItems extends React.Component {
   // }
 
   render() {
-    const {allItems, classes} = this.props;
+    const { allItems, classes } = this.props;
     return (
-        <div className={classes.container}>
-          {Object.values(allItems).map(
-              (item, index) => <ShortItem item={item} key={index}/>)}
-        </div>
+      <div className={ classes.container }>
+        {Object.values(allItems).map(
+          (item, index) => <ShortItem item={ item } key={ index } />)}
+      </div>
     );
   }
 }
 
-function mapStateToProps({items}) {
+function mapStateToProps({ items }) {
   return {
     allItems: items.allItems,
   };
@@ -115,4 +115,4 @@ const mapDispatchToProps = dispatch => {
   };
 };
 export default connect(mapStateToProps, mapDispatchToProps)(
-    withStyles(styles)(AllItems));
+  withStyles(styles)(AllItems));

@@ -11,7 +11,7 @@ import authentication from '../common/authenticationReducer.js';
 
 const reducers = {
   items: itemDuck,
-  authentication
+  authentication,
 };
 
 const loggerMiddleware = appConfig.reduxLoggerEnabled ? [reduxLogger] : [];
