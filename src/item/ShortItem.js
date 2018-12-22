@@ -1,16 +1,16 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import {withStyles} from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
-import {trimText} from "../utils";
-import red from "@material-ui/core/colors/red";
-import green from "@material-ui/core/colors/green";
-import FavoriteIcon from "@material-ui/icons/Favorite";
-import {history} from "../common/storeConfig";
+import { trimText } from '../utils';
+import red from '@material-ui/core/colors/red';
+import green from '@material-ui/core/colors/green';
+import FavoriteIcon from '@material-ui/icons/Favorite';
+import { history } from '../common/storeConfig';
 
 const styles = theme => ({
   actions: {
@@ -19,7 +19,7 @@ const styles = theme => ({
   card: {
     display: 'flex',
     marginTop: '10px',
-    width: "100%",
+    width: '100%',
     maxWidth: '330px',
   },
   details: {
@@ -50,7 +50,7 @@ const styles = theme => ({
   icon: {
     display: 'flex',
     alignItems: 'flex-end',
-    justifyContent: 'flex-start'
+    justifyContent: 'flex-start',
   },
   itemAvailable: {
     color: green[500],
@@ -60,13 +60,11 @@ const styles = theme => ({
   },
   itemSold: {
     color: red[500],
-  }
+  },
 });
 
-
 class ShortItem extends Component {
-
-  state = {countdownTextColor: 'textPrimary'};
+  state = { countdownTextColor: 'textPrimary' };
 
   interval = null;
 
@@ -76,38 +74,29 @@ class ShortItem extends Component {
 
   renderStatus = (status, classes) => {
     if (status === 'AVAILABLE') {
-      return (
-          <span className={classes.itemAvailable}>Available</span>
-      );
-    } else if (status === 'PASSED'){
-      return (
-          <span className={classes.itemPassed}>Passed</span>
-      )
+      return <span className={classes.itemAvailable}>Available</span>;
+    } else if (status === 'PASSED') {
+      return <span className={classes.itemPassed}>Passed</span>;
     } else {
-      return (
-          <span className={classes.itemSold}>Sold</span>
-      )
+      return <span className={classes.itemSold}>Sold</span>;
     }
   };
 
-  flashRedInFinalSeconds = (secondsLeft) => {
+  flashRedInFinalSeconds = secondsLeft => {
     const startFlashingAt = 60;
     if (secondsLeft < startFlashingAt && this.interval == null) {
       this.interval = setInterval(this.toggleCountdownTextColor(), 250);
-    }
-    else if (secondsLeft >= startFlashingAt && this.interval !== null) {
+    } else if (secondsLeft >= startFlashingAt && this.interval !== null) {
       clearInterval(this.interval);
       this.interval = null;
     }
-
   };
 
   toggleCountdownTextColor = () => {
     if (this.state.countdownTextColor === 'textPrimary') {
-      this.setState(state => ({countdownTextColor: 'error'}));
-    }
-    else {
-      this.setState(state => ({countdownTextColor: 'textPrimary'}));
+      this.setState(state => ({ countdownTextColor: 'error' }));
+    } else {
+      this.setState(state => ({ countdownTextColor: 'textPrimary' }));
     }
   };
 
@@ -121,49 +110,54 @@ class ShortItem extends Component {
   };
 
   render() {
-    const {item, classes} = this.props;
+    const { item, classes } = this.props;
 
     return (
-        <Card className={classes.card}>
-          <CardMedia
-              className={classes.cover}
-              image={item.imageUrl}
-              title={item.title}
-              onClick={()=>history.push(`/item/${item.id}`)}
-          />
-          <div className={classes.details}>
-            <CardContent className={classes.content} onClick={()=>history.push(`/item/${item.id}`)}>
-              <Typography component="h6" variant="h6">
-                {trimText(item.title, 20)}
+      <Card className={classes.card}>
+        <CardMedia
+          className={classes.cover}
+          image={item.imageUrl}
+          title={item.title}
+          onClick={() => history.push(`/item/${item.id}`)}
+        />
+        <div className={classes.details}>
+          <CardContent
+            className={classes.content}
+            onClick={() => history.push(`/item/${item.id}`)}
+          >
+            <Typography component="h6" variant="h6">
+              {trimText(item.title, 20)}
+            </Typography>
+            <Typography variant="subtitle1" color="textSecondary">
+              {trimText(item.description, 20)}
+            </Typography>
+          </CardContent>
+          <div className={classes.controls}>
+            <div className={classes.countDown}>
+              <Typography variant="h5">${item.currentPrice}</Typography>
+              <Typography color={this.state.countdownTextColor}>
+                {this.renderTimeRemaining(
+                  item.secondsUntilDecrease,
+                  item.status
+                )}
               </Typography>
-              <Typography variant="subtitle1" color="textSecondary">
-                {trimText(item.description, 20)}
-              </Typography>
-            </CardContent>
-            <div className={classes.controls}>
-              <div className={classes.countDown}>
-                <Typography variant="h5">
-                  ${item.currentPrice}
-                </Typography>
-                <Typography color={this.state.countdownTextColor}>
-                  {this.renderTimeRemaining(item.secondsUntilDecrease, item.status)}
-                </Typography>
-                <Typography>
-                  {this.renderStatus(item.status, classes)}
-                </Typography>
-              </div>
-              <div>
-                { item.status === 'AVAILABLE' && <IconButton aria-label="Add to favorites"
-                            className={classes.icon}>
-                  <FavoriteIcon 
-                  onClick={this.handleFavoriteClick}/>
-                </IconButton>}
-              </div>
+              <Typography>{this.renderStatus(item.status, classes)}</Typography>
+            </div>
+            <div>
+              {item.status === 'AVAILABLE' && (
+                <IconButton
+                  aria-label="Add to favorites"
+                  className={classes.icon}
+                >
+                  <FavoriteIcon onClick={this.handleFavoriteClick} />
+                </IconButton>
+              )}
             </div>
           </div>
-        </Card>
+        </div>
+      </Card>
     );
   }
 }
 
-export default withStyles(styles, {withTheme: true})(ShortItem);
+export default withStyles(styles, { withTheme: true })(ShortItem);

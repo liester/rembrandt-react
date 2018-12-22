@@ -5,28 +5,23 @@ module.exports = {
     ecmaVersion: 6,
     ecmaFeatures: {
       jsx: true,
-      experimentalObjectRestSpread: true,
-    },
+      experimentalObjectRestSpread: true
+    }
   },
   settings: {
-    'import/resolver':
-    {
+    'import/resolver': {
       node: {
-        extensions: ['.js'],
-      },
-    },
+        extensions: ['.js']
+      }
+    }
   },
   env: {
     browser: true,
     es6: true,
     node: true,
-    jest: true,
+    jest: true
   },
-  plugins: [
-    'react',
-    'import',
-    'babel',
-  ],
+  plugins: ['react', 'import', 'babel'],
   globals: {},
   rules: {
     'array-bracket-spacing': ['error', 'never'],
@@ -46,7 +41,10 @@ module.exports = {
     'func-names': 'off',
     'import/no-unresolved': ['error', { ignore: ['config'] }],
     indent: ['error', 2, { SwitchCase: 1 }],
-    'key-spacing': ['error', { beforeColon: false, afterColon: true, mode: 'strict' }],
+    'key-spacing': [
+      'error',
+      { beforeColon: false, afterColon: true, mode: 'strict' }
+    ],
     'keyword-spacing': ['error', { before: true, after: true }],
     'max-len': ['error', 150, 2],
     'no-array-constructor': 'error',
@@ -62,13 +60,19 @@ module.exports = {
     'no-trailing-spaces': 'error',
     'no-undef': 'error',
     'no-unused-expressions': 'error',
-    'no-unused-vars': ['error', { args: 'after-used', ignoreRestSiblings: true }],
+    'no-unused-vars': [
+      'error',
+      { args: 'after-used', ignoreRestSiblings: true }
+    ],
     'no-var': 'error',
     'object-curly-spacing': ['error', 'always'],
-    'one-var': ['error', {
-      initialized: 'never',
-      uninitialized: 'always',
-    }],
+    'one-var': [
+      'error',
+      {
+        initialized: 'never',
+        uninitialized: 'always'
+      }
+    ],
     'operator-linebreak': ['error', 'after'],
     'padded-blocks': ['error', 'never'],
     'prefer-const': 'error',
@@ -81,17 +85,21 @@ module.exports = {
     'space-before-function-paren': ['error', 'never'],
     'space-in-parens': ['error', 'never'],
     'space-infix-ops': ['error', { int32Hint: false }],
-    'spaced-comment': ['error', 'always', {
-      line: {
-        markers: ['/'],
-        exceptions: ['-'],
-      },
-      block: {
-        balanced: true,
-        markers: ['!'],
-        exceptions: ['*'],
-      },
-    }],
+    'spaced-comment': [
+      'error',
+      'always',
+      {
+        line: {
+          markers: ['/'],
+          exceptions: ['-']
+        },
+        block: {
+          balanced: true,
+          markers: ['!'],
+          exceptions: ['*']
+        }
+      }
+    ],
     strict: ['error', 'global'],
     'template-curly-spacing': ['error', 'never'],
 
@@ -107,10 +115,6 @@ module.exports = {
     'react/jsx-sort-props': 'off',
     'react/jsx-uses-react': 'error',
     'react/jsx-uses-vars': 'warn',
-    'react/jsx-curly-spacing': ['error', 'always', {
-      allowMultiline: true,
-      spacing: { objectLiterals: 'never' },
-    }],
     'react/no-did-mount-set-state': ['warn'],
     'react/no-did-update-set-state': ['warn'],
     'react/no-multi-comp': 'off',
@@ -120,6 +124,6 @@ module.exports = {
     'react/prop-types': ['error', { skipUndeclared: true }],
     'react/react-in-jsx-scope': 'off',
     'react/self-closing-comp': 'warn',
-    'react/wrap-multilines': 'off',
-  },
+    'react/wrap-multilines': 'off'
+  }
 };
