@@ -19,9 +19,9 @@ export default (state = DEFAULT_STATE, { type, payload }) => {
         ...state,
         allItems: {
           ...state.allItems,
-          [payload.id]: payload
-        }
-      }
+          [payload.id]: payload,
+        },
+      };
     default:
       return state;
   }

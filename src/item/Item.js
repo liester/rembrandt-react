@@ -21,7 +21,7 @@ import Button from '@material-ui/core/Button';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as itemsActions from './itemsActions.js';
-import { withRouter} from 'react-router';
+import { withRouter } from 'react-router';
 
 const styles = theme => ({
   card: {
@@ -97,19 +97,20 @@ const styles = theme => ({
   itemSold: {
     color: red[500],
     fontWeight: 'bold',
-  }
+  },
 });
 
 class Item extends React.Component {
-
   static propTypes = {
-    item: PropTypes.object.isRequired,
+    item: PropTypes.object,
     classes: PropTypes.object.isRequired,
+    match: PropTypes.object,
+    itemsActions: PropTypes.object,
   };
 
   state = {
     expanded: false,
-    isFlipped: false
+    isFlipped: false,
   };
 
   componentWillMount() {
@@ -118,7 +119,7 @@ class Item extends React.Component {
   }
 
   handleExpandClick = () => {
-    this.setState(state => ({expanded: !state.expanded}));
+    this.setState(state => ({ expanded: !state.expanded }));
   };
 
   handleFavoriteClick = () => {
@@ -127,17 +128,11 @@ class Item extends React.Component {
 
   renderStatus = (status, classes) => {
     if (status === 'AVAILABLE') {
-      return (
-        <span className={classes.itemAvailable}>Available</span>
-      );
+      return <span className={classes.itemAvailable}>Available</span>;
     } else if (status === 'PASSED') {
-      return (
-        <span className={classes.itemPassed}>Passed</span>
-      );
+      return <span className={classes.itemPassed}>Passed</span>;
     } else {
-      return (
-          <span className={classes.itemSold}>Sold</span>
-      )
+      return <span className={classes.itemSold}>Sold</span>;
     }
   };
 
@@ -154,15 +149,17 @@ class Item extends React.Component {
       return (
         <div className={classes.watchingBlock}>
           <VisibleIcon className={classes.watchingIcon} />
-          <span className={classes.watchingText}>&nbsp;&nbsp;{totalViewers}+ viewers!</span>
+          <span className={classes.watchingText}>
+            &nbsp;&nbsp;{totalViewers}+ viewers!
+          </span>
         </div>
-      )
+      );
     } else {
-      return null
+      return null;
     }
   };
 
-  buyItem = (item) => {
+  buyItem = item => {
     this.props.itemsActions.buyItemById(item.id);
   };
 
@@ -170,22 +167,22 @@ class Item extends React.Component {
     const { item, classes } = this.props;
     return (
       <React.Fragment>
-        {item &&
+        {item && (
           <Card className={classes.card}>
             <Flippy
               flipOnHover={false} // default false
               flipOnClick={false} // default false
               flipDirection="horizontal" // horizontal or vertical
-              ref={(r) => this.flippy = r} // to use toggle method like this.flippy.toggle()
-            // if you pass isFlipped prop component will be controlled component.
-            // and other props, which will go to div
+              ref={r => (this.flippy = r)} // to use toggle method like this.flippy.toggle()
+              // if you pass isFlipped prop component will be controlled component.
+              // and other props, which will go to div
             >
               <FrontSide className={classes.noShadow}>
                 <CardHeader
                   avatar={
                     <Avatar aria-label="Recipe" className={classes.avatar}>
                       R
-              </Avatar>
+                    </Avatar>
                   }
                   action={
                     <IconButton onClick={() => this.flippy.toggle()}>
@@ -206,38 +203,40 @@ class Item extends React.Component {
                   <Info className={classes.infoButton} />
                 </IconButton>
                 <CardContent>
-                  <Typography paragraph className={classes.description}>Description:</Typography>
-                  <Typography paragraph>
-                    {item.description}
+                  <Typography paragraph className={classes.description}>
+                    Description:
                   </Typography>
+                  <Typography paragraph>{item.description}</Typography>
                 </CardContent>
               </BackSide>
             </Flippy>
             <CardContent>
               <div className={classes.buyInfo}>
-              <Typography>
-                {this.renderStatus(item.status, classes)}
-              </Typography>
-              <Typography variant="h5">
-                Current Price: ${item.currentPrice}
-              </Typography>
-                  <Button variant="contained" color="primary"
-                          disabled={item.status !== 'AVAILABLE'}
-                          className={classes.buyButton} onClick={() => {
-                this.buyItem(item)
-              }}>
-                Buy This!
-              </Button>
-              {/* <Typography>
+                <Typography>
+                  {this.renderStatus(item.status, classes)}
+                </Typography>
+                <Typography variant="h5">
+                  Current Price: ${item.currentPrice}
+                </Typography>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  disabled={item.status !== 'AVAILABLE'}
+                  className={classes.buyButton}
+                  onClick={() => {
+                    this.buyItem(item);
+                  }}
+                >
+                  Buy This!
+                </Button>
+                {/* <Typography>
                 {this.renderTimeRemaining(item.secondsUntilDecrease)}
               </Typography> */}
-
               </div>
             </CardContent>
             <CardActions className={classes.actions} disableActionSpacing>
               <IconButton aria-label="Add to favorites">
-                <FavoriteIcon className={{[classes.itemFavorited]: this.state.itemFavorited}}
-                              onClick={this.handleFavoriteClick}/>
+                <FavoriteIcon onClick={this.handleFavoriteClick} />
               </IconButton>
               <IconButton aria-label="Share">
                 <ShareIcon />
@@ -250,26 +249,30 @@ class Item extends React.Component {
                 onClick={this.handleExpandClick}
                 aria-expanded={this.state.expanded}
                 aria-label="Show more"
-              >
-              </IconButton>
+              />
             </CardActions>
           </Card>
-        }</React.Fragment>
+        )}
+      </React.Fragment>
     );
   }
 }
 
-const mapStateToProps = ({items}, {match} )=> {
+const mapStateToProps = ({ items }, { match }) => {
   const itemId = match.params.id;
   return {
-    item: items.allItems[itemId]
+    item: items.allItems[itemId],
   };
 };
-
 
 const mapDispatchToProps = dispatch => {
   return {
     itemsActions: bindActionCreators(itemsActions, dispatch),
   };
 };
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(Item)));
+export default withRouter(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(withStyles(styles)(Item))
+);

@@ -15,11 +15,12 @@ const root = document.getElementById('root');
 setupSocket(storeConfig.dispatch);
 
 ReactDOM.render(
-    <MuiThemeProvider theme={theme}>
-        <Provider store={storeConfig}>
-            <App />
-        </Provider>
-    </MuiThemeProvider>
-    , root);
+  <MuiThemeProvider theme={theme}>
+    <Provider store={storeConfig}>
+      <App />
+    </Provider>
+  </MuiThemeProvider>,
+  root
+);
 
 registerServiceWorker();

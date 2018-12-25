@@ -1,8 +1,5 @@
 import axios from 'axios';
-import {
-  ITEMS_UPDATED,
-  UPDATE_SINGLE_ITEM
-} from './itemsReducer.js';
+import { ITEMS_UPDATED, UPDATE_SINGLE_ITEM } from './itemsReducer.js';
 import appConfig from '../app/appConfig.js';
 const itemsUrl = `${appConfig.apiBaseUrl}/items`;
 
@@ -25,7 +22,7 @@ export const getAll = () => {
   };
 };
 
-export const getById = (itemId) => {
+export const getById = itemId => {
   return dispatch => {
     return axios
       .get(`${appConfig.apiBaseUrl}/item?itemId=${itemId}`)
@@ -38,7 +35,7 @@ export const getById = (itemId) => {
   };
 };
 
-export const buyItemById = (itemId) => {
+export const buyItemById = itemId => {
   return dispatch => {
     return axios
       .put(`${appConfig.apiBaseUrl}/item/${itemId}/buy`)

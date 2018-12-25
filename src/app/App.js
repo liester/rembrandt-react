@@ -15,9 +15,12 @@ import axios from 'axios';
 class App extends React.Component {
   componentWillMount() {
     // authenticatedUser might not exist, but thats ok.
-    const authenticatedUser = JSON.parse(localStorage.getItem('authenticatedUser'));
+    const authenticatedUser = JSON.parse(
+      localStorage.getItem('authenticatedUser')
+    );
     if (authenticatedUser) {
-      axios.defaults.headers.common['Firebase-Auth'] = authenticatedUser.idToken;
+      axios.defaults.headers.common['Firebase-Auth']
+        = authenticatedUser.idToken;
     }
     this.props.authenticationActions.signIn(authenticatedUser);
   }
@@ -25,12 +28,17 @@ class App extends React.Component {
   render() {
     return (
       <ResponsiveDrawer>
-        <Router history={ history }>
+        <Router history={history}>
           <Switch>
-            <Route exact path="/" component={ AllItems } />
-            <Route exact path="/item/:id" component={ Item } />
-            <AuthenticatedRoute exact path="/buyer/:userId" component={ BuyerPage } isAuthenticated={ this.props.isAuthenticated } />
-            <Route exact path="/login" component={ LoginPage } />
+            <Route exact path="/" component={AllItems} />
+            <Route exact path="/item/:id" component={Item} />
+            <AuthenticatedRoute
+              exact
+              path="/buyer/:userId"
+              component={BuyerPage}
+              isAuthenticated={this.props.isAuthenticated}
+            />
+            <Route exact path="/login" component={LoginPage} />
           </Switch>
         </Router>
       </ResponsiveDrawer>
@@ -38,17 +46,26 @@ class App extends React.Component {
   }
 }
 
-const AuthenticatedRoute = ({ component: Component, isAuthenticated, ...rest }) => (
-  <Route { ...rest } render={ props => {
-    return (
-      isAuthenticated ?
-        <Component { ...props } /> :
-        <Redirect to={{
-          pathname: '/login',
-          state: { from: props.location },
-        }} />
-    );
-  } } />
+const AuthenticatedRoute = ({
+  component: Component,
+  isAuthenticated,
+  ...rest
+}) => (
+  <Route
+    {...rest}
+    render={props => {
+      return isAuthenticated ? (
+        <Component {...props} />
+      ) : (
+        <Redirect
+          to={{
+            pathname: '/login',
+            state: { from: props.location },
+          }}
+        />
+      );
+    }}
+  />
 );
 
 const mapDispatchToProps = dispatch => {
@@ -63,4 +80,7 @@ const mapStateToProps = ({ authentication }) => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(App);

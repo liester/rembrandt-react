@@ -73,7 +73,7 @@ module.exports = {
         uninitialized: 'always'
       }
     ],
-    'operator-linebreak': ['error', 'after'],
+    'operator-linebreak': ['error', 'before'],
     'padded-blocks': ['error', 'never'],
     'prefer-const': 'error',
     'prefer-template': 'error',

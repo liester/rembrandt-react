@@ -12,53 +12,61 @@ import axios from 'axios';
 
 const styles = {};
 class LoginPage extends React.Component {
-    static propTypes = {
-      authenticationActions: PropTypes.object,
-      location: PropTypes.object,
-      isAuthenticated: PropTypes.bool,
+  static propTypes = {
+    authenticationActions: PropTypes.object,
+    location: PropTypes.object,
+    isAuthenticated: PropTypes.bool,
+  };
+
+  state = { redirectToReferrer: false };
+
+  componentDidMount() {
+    this.unregisterAuthObserver = firebase.auth().onAuthStateChanged(user => {
+      if (user) {
+        user.getIdToken().then(idToken => {
+          user = JSON.parse(JSON.stringify(user));
+          user.idToken = idToken;
+          axios.defaults.headers.common['Firebase-Auth'] = idToken;
+          const attemptCreateProfile = true;
+          this.props.authenticationActions.signIn(user, attemptCreateProfile);
+        });
+      }
+    });
+  }
+
+  render() {
+    const { from } = this.props.location.state || { from: { pathname: '/' } };
+    const { redirectToReferrer } = this.state;
+    const uiConfig = {
+      // Popup signin flow rather than redirect flow.
+      signInFlow: 'popup',
+      // We will display Google and Facebook as auth providers.
+      signInOptions: [
+        firebase.auth.EmailAuthProvider.PROVIDER_ID,
+        firebase.auth.GoogleAuthProvider.PROVIDER_ID,
+      ],
+      callbacks: {
+        // Avoid redirects after sign-in.
+        signInSuccessWithAuthResult: () => false,
+      },
     };
 
-    state = { redirectToReferrer: false };
-
-    componentDidMount() {
-      this.unregisterAuthObserver = firebase.auth().onAuthStateChanged(
-        user => {
-          if (user) {
-            user.getIdToken().then(idToken => {
-              user.idToken = idToken;
-              axios.defaults.headers.common['Firebase-Auth'] = idToken;
-              this.props.authenticationActions.signIn(user);
-            });
-          }
-        });
+    if (redirectToReferrer) {
+      return <Redirect to={from} />;
     }
-
-    render() {
-      const { from } = this.props.location.state || { from: { pathname: '/' } };
-      const { redirectToReferrer } = this.state;
-      const uiConfig = {
-        // Popup signin flow rather than redirect flow.
-        signInFlow: 'popup',
-        // We will display Google and Facebook as auth providers.
-        signInOptions: [
-          firebase.auth.EmailAuthProvider.PROVIDER_ID,
-          firebase.auth.GoogleAuthProvider.PROVIDER_ID,
-        ],
-        callbacks: {
-          // Avoid redirects after sign-in.
-          signInSuccessWithAuthResult: () => false,
-        },
-      };
-
-      if (redirectToReferrer) { return <Redirect to={ from } />; }
-      if (this.props.isAuthenticated) { return <Redirect to={ from } />; }
-      return (
-        <React.Fragment>
-          <div>You must log in to view page at: [{from.pathname}].</div>
-          <StyledFirebaseAuth uiConfig={ uiConfig } firebaseAuth={ firebase.auth() } />
-        </React.Fragment>
-      );
+    if (this.props.isAuthenticated) {
+      return <Redirect to={from} />;
     }
+    return (
+      <React.Fragment>
+        <div>You must log in to view page at: [{from.pathname}].</div>
+        <StyledFirebaseAuth
+          uiConfig={uiConfig}
+          firebaseAuth={firebase.auth()}
+        />
+      </React.Fragment>
+    );
+  }
 }
 
 const mapStateToProps = ({ items, authentication }) => {
@@ -73,4 +81,7 @@ const mapDispatchToProps = dispatch => {
     authenticationActions: bindActionCreators(authenticationActions, dispatch),
   };
 };
-export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(LoginPage));
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withStyles(styles)(LoginPage));
