@@ -48,7 +48,13 @@ const styles = theme => ({
       display: 'none',
     },
   },
-  toolbar: { ...theme.mixins.toolbar },
+  toolbar: {
+    ...theme.mixins.toolbar,
+    display: 'flex',
+    justifyContent: 'space-around',
+    alignItems: 'center',
+    textTransform: 'uppercase',
+  },
   drawerPaper: {
     width: drawerWidth,
   },
@@ -80,18 +86,39 @@ class ResponsiveDrawer extends React.Component {
     this.setState(state => ({ mobileOpen: !state.mobileOpen }));
   };
 
-  renderUser = user => {
+  renderUser = (user, width) => {
     if (user) {
       return (
-        <Button variant="contained" color="primary" onClick={ this.props.authenticationActions.signOut }>
-          Sign Out
-        </Button>
+        <React.Fragment>
+          <div>{user.displayName}</div>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={() => {
+              if (width === 'xs') {
+                this.handleDrawerToggle();
+              }
+              this.props.authenticationActions.signOut();
+            }}
+          >
+            Sign Out
+          </Button>
+        </React.Fragment>
       );
     } else {
       return (
-        <Button variant="contained" color="primary" onClick={ () => history.push('/login') }>
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={() => {
+            history.push('/login');
+            if (width === 'xs') {
+              this.handleDrawerToggle();
+            }
+          }}
+        >
           Sign In
-        </Button >
+        </Button>
       );
     }
   };
@@ -99,33 +126,39 @@ class ResponsiveDrawer extends React.Component {
   render() {
     const { classes, theme, width, user } = this.props;
     const userId = user && user.uid;
-    const menuItems = [{
-      label: 'Home',
-      path: '/',
-      icon: <HomeIcon />,
-    },
-    {
-      label: 'My Items',
-      path: `/buyer/${userId || 'auth'}`,
-      icon: (<Badge color="primary" badgeContent={ 4 }>
-        <ShoppingCartIcon />
-      </Badge>),
-    }];
+    const menuItems = [
+      {
+        label: 'Home',
+        path: '/',
+        icon: <HomeIcon />,
+      },
+      {
+        label: 'My Items',
+        path: `/buyer/${userId || 'auth'}`,
+        icon: (
+          <Badge color="primary" badgeContent={4}>
+            <ShoppingCartIcon />
+          </Badge>
+        ),
+      },
+    ];
     const drawer = (
       <div>
-        <div className={ classes.toolbar }>
-          {this.renderUser(user)}
-        </div>
+        <div className={classes.toolbar}>{this.renderUser(user, width)}</div>
         <Divider />
         <List>
           {menuItems.map(item => {
             return (
-              <ListItem button key={ item.label } onClick={ () => {
-                history.push(item.path);
-                if (width === 'xs') {
-                  this.handleDrawerToggle();
-                }
-              } }>
+              <ListItem
+                button
+                key={item.label}
+                onClick={() => {
+                  history.push(item.path);
+                  if (width === 'xs') {
+                    this.handleDrawerToggle();
+                  }
+                }}
+              >
                 <ListItemIcon>{item.icon}</ListItemIcon>
                 <ListItemText>{item.label}</ListItemText>
               </ListItem>
@@ -136,15 +169,15 @@ class ResponsiveDrawer extends React.Component {
     );
 
     return (
-      <div className={ classes.root }>
+      <div className={classes.root}>
         <CssBaseline />
-        <AppBar position="fixed" className={ classes.appBar }>
+        <AppBar position="fixed" className={classes.appBar}>
           <Toolbar>
             <IconButton
               color="inherit"
               aria-label="Open drawer"
-              onClick={ this.handleDrawerToggle }
-              className={ classes.menuButton }
+              onClick={this.handleDrawerToggle}
+              className={classes.menuButton}
             >
               <MenuIcon />
             </IconButton>
@@ -153,15 +186,15 @@ class ResponsiveDrawer extends React.Component {
             </Typography>
           </Toolbar>
         </AppBar>
-        <nav className={ classes.drawer }>
+        <nav className={classes.drawer}>
           {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
           <Hidden smUp implementation="js">
             <Drawer
-              container={ this.props.container }
+              container={this.props.container}
               variant="temporary"
-              anchor={ theme.direction === 'rtl' ? 'right' : 'left' }
-              open={ this.state.mobileOpen }
-              onClose={ this.handleDrawerToggle }
+              anchor={theme.direction === 'rtl' ? 'right' : 'left'}
+              open={this.state.mobileOpen}
+              onClose={this.handleDrawerToggle}
               classes={{
                 paper: classes.drawerPaper,
               }}
@@ -184,8 +217,8 @@ class ResponsiveDrawer extends React.Component {
             </Drawer>
           </Hidden>
         </nav>
-        <main className={ classes.content }>
-          <div className={ classes.toolbar } />
+        <main className={classes.content}>
+          <div className={classes.toolbar} />
           {this.props.children}
         </main>
       </div>
@@ -206,4 +239,11 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-export default withWidth()(withStyles(styles, { withTheme: true })(connect(mapStateToProps, mapDispatchToProps)(ResponsiveDrawer)));
+export default withWidth()(
+  withStyles(styles, { withTheme: true })(
+    connect(
+      mapStateToProps,
+      mapDispatchToProps
+    )(ResponsiveDrawer)
+  )
+);

@@ -7,6 +7,7 @@ import { connect } from 'react-redux';
 import * as authenticationActions from '../common/authenticationActions.js';
 import firebase from './firebase.js';
 import StyledFirebaseAuth from 'react-firebaseui/StyledFirebaseAuth';
+import firebaseui from 'firebaseui';
 
 import axios from 'axios';
 
@@ -49,6 +50,7 @@ class LoginPage extends React.Component {
         // Avoid redirects after sign-in.
         signInSuccessWithAuthResult: () => false,
       },
+      credentialHelper: firebaseui.auth.CredentialHelper.NONE,
     };
 
     if (redirectToReferrer) {

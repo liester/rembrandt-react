@@ -106,6 +106,7 @@ class Item extends React.Component {
     classes: PropTypes.object.isRequired,
     match: PropTypes.object,
     itemsActions: PropTypes.object,
+    history: PropTypes.object,
   };
 
   state = {
@@ -164,9 +165,19 @@ class Item extends React.Component {
   };
 
   render() {
-    const { item, classes } = this.props;
+    const { item, classes, history } = this.props;
     return (
       <React.Fragment>
+        <Button
+          variant="contained"
+          color="primary"
+          className={classes.buyButton}
+          onClick={() => {
+            history.goBack();
+          }}
+        >
+          BACK
+        </Button>
         {item && (
           <Card className={classes.card}>
             <Flippy
