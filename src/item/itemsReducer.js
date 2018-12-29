@@ -14,14 +14,6 @@ export default (state = DEFAULT_STATE, { type, payload }) => {
         ...state,
         allItems: payload,
       };
-    case UPDATE_SINGLE_ITEM:
-      return {
-        ...state,
-        allItems: {
-          ...state.allItems,
-          [payload.id]: payload,
-        },
-      };
     default:
       return state;
   }

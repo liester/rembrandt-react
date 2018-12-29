@@ -21,8 +21,8 @@ class App extends React.Component {
     if (authenticatedUser) {
       axios.defaults.headers.common['Firebase-Auth']
         = authenticatedUser.idToken;
+        this.props.authenticationActions.signIn(authenticatedUser);
     }
-    this.props.authenticationActions.signIn(authenticatedUser);
   }
 
   render() {

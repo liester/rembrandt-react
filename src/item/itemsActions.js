@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { ITEMS_UPDATED, UPDATE_SINGLE_ITEM } from './itemsReducer.js';
+import { USER_PROFILE_UPDATE} from '../common/authenticationReducer.js';
 import appConfig from '../app/appConfig.js';
 const itemsUrl = `${appConfig.apiBaseUrl}/items`;
 
@@ -39,8 +40,8 @@ export const buyItemById = itemId => {
   return dispatch => {
     return axios
       .put(`${appConfig.apiBaseUrl}/item/${itemId}/buy`)
-      .then(response => {
-        dispatch({ type: UPDATE_SINGLE_ITEM, payload: response.data });
+      .then(({data}) => {
+        dispatch({ type: USER_PROFILE_UPDATE, payload: data.profile });
       })
       .catch(error => {
         throw error;

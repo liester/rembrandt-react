@@ -12,8 +12,6 @@ import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import red from '@material-ui/core/colors/red';
 import green from '@material-ui/core/colors/green';
-import FavoriteIcon from '@material-ui/icons/Favorite';
-import ShareIcon from '@material-ui/icons/Share';
 import VisibleIcon from '@material-ui/icons/Visibility';
 import Button from '@material-ui/core/Button';
 import Collapse from '@material-ui/core/Collapse';
@@ -165,7 +163,7 @@ class Item extends React.Component {
           <CardHeader
             avatar={
               <Avatar aria-label="Recipe" className={classes.avatar}>
-                {item.title.substring(0, 1)}
+                {item && item.title.substring(0, 1)}
               </Avatar>
             }
             title={item.title}
@@ -212,6 +210,7 @@ class Item extends React.Component {
           </CardActions>
           <Collapse in={this.state.expanded} timeout="auto" unmountOnExit>
             <CardContent>
+            <Typography paragraph>Item ID: {item.id}</Typography>
               <Typography paragraph>Description:</Typography>
               <Typography paragraph>
                 {item.description}

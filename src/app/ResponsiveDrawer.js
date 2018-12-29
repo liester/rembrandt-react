@@ -181,9 +181,14 @@ class ResponsiveDrawer extends React.Component {
             >
               <MenuIcon />
             </IconButton>
+            <div style={{display: 'flex', justifyContent: 'space-between', flexGrow: 1}}>
             <Typography variant="h6" color="inherit" noWrap>
               Rembrandt
             </Typography>
+            <Typography variant="h6" color="inherit" noWrap>
+              {user && user.profile && `Funds $${user.profile.cash}`}
+            </Typography>
+            </div>
           </Toolbar>
         </AppBar>
         <nav className={classes.drawer}>
