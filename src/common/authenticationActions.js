@@ -19,7 +19,7 @@ export const signOut = () => {
   return dispatch => {
     dispatch({ type: USER_SIGNED_OUT });
     localStorage.setItem('authenticatedUser', null);
-    axios.defaults.headers.common['Firebase-Auth'] = null
+    delete axios.defaults.headers.common['Firebase-Auth']
     firebase.auth().signOut();
   };
 };
