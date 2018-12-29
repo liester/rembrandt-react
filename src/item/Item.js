@@ -15,9 +15,9 @@ import green from '@material-ui/core/colors/green';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import ShareIcon from '@material-ui/icons/Share';
 import VisibleIcon from '@material-ui/icons/Visibility';
-import Flippy, { FrontSide, BackSide } from 'react-flippy';
-import Info from '@material-ui/icons/Info';
 import Button from '@material-ui/core/Button';
+import Collapse from '@material-ui/core/Collapse';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as itemsActions from './itemsActions.js';
@@ -30,8 +30,7 @@ const styles = theme => ({
     margin: '1em 0em',
   },
   media: {
-    height: 0,
-    paddingTop: '56.25%', // 16:9
+    width: "100%",
   },
   actions: {
     display: 'flex',
@@ -106,18 +105,12 @@ class Item extends React.Component {
     classes: PropTypes.object.isRequired,
     match: PropTypes.object,
     itemsActions: PropTypes.object,
-    history: PropTypes.object,
   };
 
   state = {
     expanded: false,
     isFlipped: false,
   };
-
-  componentWillMount() {
-    const itemId = this.props.match.params.id;
-    this.props.itemsActions.getById(itemId);
-  }
 
   handleExpandClick = () => {
     this.setState(state => ({ expanded: !state.expanded }));
@@ -165,116 +158,71 @@ class Item extends React.Component {
   };
 
   render() {
-    const { item, classes, history } = this.props;
+    const { item, classes } = this.props;
     return (
-      <React.Fragment>
-        <Button
-          variant="contained"
-          color="primary"
-          className={classes.buyButton}
-          onClick={() => {
-            history.goBack();
-          }}
-        >
-          BACK
-        </Button>
-        {item && (
-          <Card className={classes.card}>
-            <Flippy
-              flipOnHover={false} // default false
-              flipOnClick={false} // default false
-              flipDirection="horizontal" // horizontal or vertical
-              ref={r => (this.flippy = r)} // to use toggle method like this.flippy.toggle()
-              // if you pass isFlipped prop component will be controlled component.
-              // and other props, which will go to div
-            >
-              <FrontSide className={classes.noShadow}>
-                <CardHeader
-                  avatar={
-                    <Avatar aria-label="Recipe" className={classes.avatar}>
-                      R
-                    </Avatar>
-                  }
-                  action={
-                    <IconButton onClick={() => this.flippy.toggle()}>
-                      <Info />
-                    </IconButton>
-                  }
-                  title={item.title}
-                  subheader={item.auctionCompany}
-                />
-                <CardMedia
-                  className={classes.media}
-                  image={item.imageUrl}
-                  title={item.title}
-                />
-              </FrontSide>
-              <BackSide className={classes.noShadow}>
-                <IconButton onClick={() => this.flippy.toggle()}>
-                  <Info className={classes.infoButton} />
-                </IconButton>
-                <CardContent>
-                  <Typography paragraph className={classes.description}>
-                    Description:
-                  </Typography>
-                  <Typography paragraph>{item.description}</Typography>
-                </CardContent>
-              </BackSide>
-            </Flippy>
-            <CardContent>
-              <div className={classes.buyInfo}>
-                <Typography>
-                  {this.renderStatus(item.status, classes)}
-                </Typography>
-                <Typography variant="h5">
-                  Current Price: ${item.currentPrice}
-                </Typography>
-                <Button
-                  variant="contained"
-                  color="primary"
-                  disabled={item.status !== 'AVAILABLE'}
-                  className={classes.buyButton}
-                  onClick={() => {
-                    this.buyItem(item);
-                  }}
-                >
-                  Buy This!
+      item && (
+        <Card className={classes.card}>
+          <CardHeader
+            avatar={
+              <Avatar aria-label="Recipe" className={classes.avatar}>
+                {item.title.substring(0, 1)}
+              </Avatar>
+            }
+            title={item.title}
+            subheader={item.auctionCompany}
+          />
+          <CardMedia
+            className={classes.media}
+            image={item.imageUrl}
+            title={item.title}
+            component="img"
+          />
+          <CardContent>
+            <div className={classes.buyInfo}>
+              <Typography>
+                {this.renderStatus(item.status, classes)}
+              </Typography>
+              <Typography variant="h5">
+                Current Price: ${item.currentPrice}
+              </Typography>
+              <Button
+                variant="contained"
+                color="primary"
+                disabled={item.status !== 'AVAILABLE'}
+                className={classes.buyButton}
+                onClick={() => {
+                  this.buyItem(item);
+                }}
+              >
+                Buy This!
                 </Button>
-                {/* <Typography>
-                {this.renderTimeRemaining(item.secondsUntilDecrease)}
-              </Typography> */}
-              </div>
+            </div>
+          </CardContent>
+          <CardActions className={classes.actions} disableActionSpacing>
+            <IconButton
+              className={classnames(classes.expand, {
+                [classes.expandOpen]: this.state.expanded,
+              })}
+              onClick={this.handleExpandClick}
+              aria-expanded={this.state.expanded}
+              aria-label="Show more"
+            >
+              <ExpandMoreIcon />
+            </IconButton>
+          </CardActions>
+          <Collapse in={this.state.expanded} timeout="auto" unmountOnExit>
+            <CardContent>
+              <Typography paragraph>Description:</Typography>
+              <Typography paragraph>
+                {item.description}
+              </Typography>
             </CardContent>
-            <CardActions className={classes.actions} disableActionSpacing>
-              <IconButton aria-label="Add to favorites">
-                <FavoriteIcon onClick={this.handleFavoriteClick} />
-              </IconButton>
-              <IconButton aria-label="Share">
-                <ShareIcon />
-              </IconButton>
-              {this.renderTotalViewers(item.totalViews, classes)}
-              <IconButton
-                className={classnames(classes.expand, {
-                  [classes.expandOpen]: this.state.expanded,
-                })}
-                onClick={this.handleExpandClick}
-                aria-expanded={this.state.expanded}
-                aria-label="Show more"
-              />
-            </CardActions>
-          </Card>
-        )}
-      </React.Fragment>
+          </Collapse>
+        </Card>
+      )
     );
   }
 }
-
-const mapStateToProps = ({ items }, { match }) => {
-  const itemId = match.params.id;
-  return {
-    item: items.allItems[itemId],
-  };
-};
 
 const mapDispatchToProps = dispatch => {
   return {
@@ -283,7 +231,7 @@ const mapDispatchToProps = dispatch => {
 };
 export default withRouter(
   connect(
-    mapStateToProps,
+    null,
     mapDispatchToProps
   )(withStyles(styles)(Item))
 );
