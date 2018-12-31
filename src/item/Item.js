@@ -26,9 +26,10 @@ const styles = theme => ({
     maxWidth: 345,
     width: '100%',
     margin: '1em 0em',
+    height: '100%',
   },
   media: {
-    width: "100%",
+    width: '100%',
   },
   actions: {
     display: 'flex',
@@ -101,7 +102,6 @@ class Item extends React.Component {
   static propTypes = {
     item: PropTypes.object,
     classes: PropTypes.object.isRequired,
-    match: PropTypes.object,
     itemsActions: PropTypes.object,
   };
 
@@ -177,9 +177,7 @@ class Item extends React.Component {
           />
           <CardContent>
             <div className={classes.buyInfo}>
-              <Typography>
-                {this.renderStatus(item.status, classes)}
-              </Typography>
+              <Typography>{this.renderStatus(item.status, classes)}</Typography>
               <Typography variant="h5">
                 Current Price: ${item.currentPrice}
               </Typography>
@@ -193,7 +191,7 @@ class Item extends React.Component {
                 }}
               >
                 Buy This!
-                </Button>
+              </Button>
             </div>
           </CardContent>
           <CardActions className={classes.actions} disableActionSpacing>
@@ -210,11 +208,9 @@ class Item extends React.Component {
           </CardActions>
           <Collapse in={this.state.expanded} timeout="auto" unmountOnExit>
             <CardContent>
-            <Typography paragraph>Item ID: {item.id}</Typography>
+              <Typography paragraph>Item ID: {item.id}</Typography>
               <Typography paragraph>Description:</Typography>
-              <Typography paragraph>
-                {item.description}
-              </Typography>
+              <Typography paragraph>{item.description}</Typography>
             </CardContent>
           </Collapse>
         </Card>
