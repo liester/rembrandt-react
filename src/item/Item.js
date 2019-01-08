@@ -130,11 +130,15 @@ class Item extends React.Component {
   };
 
   renderTimeRemaining = remainingTimeInSeconds => {
-    if (remainingTimeInSeconds === 1) {
-      return 'Price Drop In: a second';
-    }
-    return `Price Drop In: ${moment.duration(remainingTimeInSeconds, 'seconds').humanize()}`;
+    const message = `Price Drop In:`;
+    // if (remainingTimeInSeconds === 1) {
+    //   return 'Price Drop In: a second';
+    // }
+    // return `Price Drop In: ${moment.duration(remainingTimeInSeconds, 'seconds').humanize()}`;
     // return `Price Drop In:${remainingTimeInSeconds} seconds`;
+    const time = moment.utc(moment.duration(remainingTimeInSeconds,"s").asMilliseconds()).format("HH:mm:ss")
+
+    return `${message} ${time}`
   };
 
   renderTotalViewers = (totalViewers, classes) => {
@@ -155,6 +159,10 @@ class Item extends React.Component {
   buyItem = item => {
     this.props.itemsActions.buyItemById(item.id);
   };
+
+  isAvailable = status =>{
+    return status =="AVAILABLE";
+  }
 
   render() {
     const { item, classes } = this.props;
@@ -180,10 +188,11 @@ class Item extends React.Component {
             <div className={classes.buyInfo}>
               <Typography>{this.renderStatus(item.status, classes)}</Typography>
               <Typography variant="h5">
-                Current Price: ${item.currentPrice}
+              {this.isAvailable(item.status) && `Current Price: $${item.currentPrice}`}
+              {!this.isAvailable(item.status) && `For: $${item.currentPrice}`}
               </Typography>
               <Typography variant="subtitle1">
-               {this.renderTimeRemaining(item.secondsUntilDecrease)}
+                {this.isAvailable(item.status) && this.renderTimeRemaining(item.secondsUntilDecrease)}
               </Typography>
               <Button
                 variant="contained"
