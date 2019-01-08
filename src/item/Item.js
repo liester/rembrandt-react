@@ -176,7 +176,6 @@ class Item extends React.Component {
             title={item.title}
             component="img"
           />
-
           <CardContent>
             <div className={classes.buyInfo}>
               <Typography>{this.renderStatus(item.status, classes)}</Typography>
@@ -184,7 +183,7 @@ class Item extends React.Component {
                 Current Price: ${item.currentPrice}
               </Typography>
               <Typography variant="subtitle1">
-                {this.renderTimeRemaining(item.secondsUntilDecrease)}
+               {this.renderTimeRemaining(item.secondsUntilDecrease)}
               </Typography>
               <Button
                 variant="contained"

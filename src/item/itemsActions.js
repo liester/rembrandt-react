@@ -50,6 +50,8 @@ export const buyItemById = itemId => {
         if(response.status === 401){
           toast.info('You must be logged in to buy.')
           history.push('/login')
+        }else if(response.data && response.data.cause){
+          toast.info(response.data.cause)
         }
         throw error;
       });
