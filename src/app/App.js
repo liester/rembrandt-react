@@ -11,6 +11,8 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as authenticationActions from '../common/authenticationActions';
 import axios from 'axios';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.min.css';
 
 class App extends React.Component {
   componentWillMount() {
@@ -21,27 +23,30 @@ class App extends React.Component {
     if (authenticatedUser) {
       axios.defaults.headers.common['Firebase-Auth']
         = authenticatedUser.idToken;
-        this.props.authenticationActions.signIn(authenticatedUser);
+      this.props.authenticationActions.signIn(authenticatedUser);
     }
   }
 
   render() {
     return (
-      <ResponsiveDrawer>
-        <Router history={history}>
-          <Switch>
-            <Route exact path="/" component={AllItems} />
-            <Route exact path="/item/:id" component={Item} />
-            <AuthenticatedRoute
-              exact
-              path="/buyer/:userId"
-              component={BuyerPage}
-              isAuthenticated={this.props.isAuthenticated}
-            />
-            <Route exact path="/login" component={LoginPage} />
-          </Switch>
-        </Router>
-      </ResponsiveDrawer>
+      <React.Fragment>
+        <ToastContainer/>
+        <ResponsiveDrawer>
+          <Router history={history}>
+            <Switch>
+              <Route exact path="/" component={AllItems} />
+              <Route exact path="/item/:id" component={Item} />
+              <AuthenticatedRoute
+                exact
+                path="/buyer/:userId"
+                component={BuyerPage}
+                isAuthenticated={this.props.isAuthenticated}
+              />
+              <Route exact path="/login" component={LoginPage} />
+            </Switch>
+          </Router>
+        </ResponsiveDrawer>
+      </React.Fragment>
     );
   }
 }
@@ -51,22 +56,22 @@ const AuthenticatedRoute = ({
   isAuthenticated,
   ...rest
 }) => (
-  <Route
-    {...rest}
-    render={props => {
-      return isAuthenticated ? (
-        <Component {...props} />
-      ) : (
-        <Redirect
-          to={{
-            pathname: '/login',
-            state: { from: props.location },
-          }}
-        />
-      );
-    }}
-  />
-);
+    <Route
+      {...rest}
+      render={props => {
+        return isAuthenticated ? (
+          <Component {...props} />
+        ) : (
+            <Redirect
+              to={{
+                pathname: '/login',
+                state: { from: props.location },
+              }}
+            />
+          );
+      }}
+    />
+  );
 
 const mapDispatchToProps = dispatch => {
   return {

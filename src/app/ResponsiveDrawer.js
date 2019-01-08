@@ -133,12 +133,12 @@ class ResponsiveDrawer extends React.Component {
         icon: <HomeIcon />,
       },
       {
-        label: 'My Items',
+        label: 'Purchases',
         path: `/buyer/${userId || 'auth'}`,
         icon: (
-          <Badge color="primary" badgeContent={4}>
+          // <Badge color="primary" badgeContent={4}>
             <ShoppingCartIcon />
-          </Badge>
+          // </Badge>
         ),
       },
     ];

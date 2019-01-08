@@ -20,6 +20,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as itemsActions from './itemsActions.js';
 import { withRouter } from 'react-router';
+import moment from 'moment'
 
 const styles = theme => ({
   card: {
@@ -129,11 +130,11 @@ class Item extends React.Component {
   };
 
   renderTimeRemaining = remainingTimeInSeconds => {
-    // if (remainingTimeInSeconds === 1) {
-    //   return 'Price Drop In: a second';
-    // }
-    // return `Price Drop In: ${moment.duration(remainingTimeInSeconds, 'seconds').humanize()}`;
-    return `Price Drop In:${remainingTimeInSeconds} seconds`;
+    if (remainingTimeInSeconds === 1) {
+      return 'Price Drop In: a second';
+    }
+    return `Price Drop In: ${moment.duration(remainingTimeInSeconds, 'seconds').humanize()}`;
+    // return `Price Drop In:${remainingTimeInSeconds} seconds`;
   };
 
   renderTotalViewers = (totalViewers, classes) => {
@@ -180,6 +181,9 @@ class Item extends React.Component {
               <Typography>{this.renderStatus(item.status, classes)}</Typography>
               <Typography variant="h5">
                 Current Price: ${item.currentPrice}
+              </Typography>
+              <Typography variant="subtitle1">
+               {this.renderTimeRemaining(item.secondsUntilDecrease)}
               </Typography>
               <Button
                 variant="contained"

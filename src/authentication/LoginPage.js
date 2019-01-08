@@ -8,6 +8,7 @@ import * as authenticationActions from '../common/authenticationActions.js';
 import firebase from './firebase.js';
 import StyledFirebaseAuth from 'react-firebaseui/StyledFirebaseAuth';
 import firebaseui from 'firebaseui';
+import Typography from '@material-ui/core/Typography';
 
 import axios from 'axios';
 
@@ -60,13 +61,16 @@ class LoginPage extends React.Component {
       return <Redirect to={from} />;
     }
     return (
-      <React.Fragment>
-        <div>You must log in to view page at: [{from.pathname}].</div>
+      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+        <Typography variant="h5">No account!?</Typography>
+        <Typography variant="h5">No Problem.</Typography>
+        <Typography variant="h5">Signing in will create one for you.</Typography>
+        <Typography variant="h5">We'll give you 10 fake dollars.</Typography>
         <StyledFirebaseAuth
           uiConfig={uiConfig}
           firebaseAuth={firebase.auth()}
         />
-      </React.Fragment>
+      </div>
     );
   }
 }
