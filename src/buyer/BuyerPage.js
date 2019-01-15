@@ -4,7 +4,7 @@ import { withStyles } from '@material-ui/core/styles';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import * as itemsActions from '../item/itemsActions.js';
-import ShortItem from '../item/ShortItem.js';
+import Item from '../item/Item.js';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import { history } from '../common/storeConfig.js';
@@ -52,13 +52,13 @@ class BuyerPage extends React.Component {
     const { allItems, classes } = this.props;
     const userId = this.props.match.params.userId;
     const buyerItems = Object.values(allItems).filter(item => {
-      return item.soldTouserId === userId;
+      return item.soldToBidder === userId;
     });
 
     return (
       <div className={ classes.container }>
         {!buyerItems.length && this.renderMuchEmpty()}
-        {Object.values(buyerItems).map((item, index) => <ShortItem item={ item } key={ index } />)}
+        {Object.values(buyerItems).map((item, index) => <Item key={index} item={item} />)}
       </div>
     );
   }
