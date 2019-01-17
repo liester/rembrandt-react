@@ -14,7 +14,7 @@ const styles = {
   },
 };
 
-class AllItems extends React.Component {
+class AllItems extends React.PureComponent {
   static propTypes = {
     allItems: PropTypes.object.isRequired,
     classes: PropTypes.object.isRequired,
@@ -25,13 +25,13 @@ class AllItems extends React.Component {
     this.props.itemsActions.getAll();
   }
 
-
   render() {
     const { allItems, classes } = this.props;
     return (
       <div className={classes.container}>
-        {Object.values(allItems).map(
-          (item, index) => <Item key={index} item={item} />)}
+        {Object.values(allItems).map((item, index) => (
+          <Item key={index} item={item} />
+        ))}
       </div>
     );
   }
@@ -48,5 +48,7 @@ const mapDispatchToProps = dispatch => {
     itemsActions: bindActionCreators(itemsActions, dispatch),
   };
 };
-export default connect(mapStateToProps, mapDispatchToProps)(
-  withStyles(styles)(AllItems));
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withStyles(styles)(AllItems));
