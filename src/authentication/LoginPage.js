@@ -65,7 +65,7 @@ class LoginPage extends React.Component {
         <Typography variant="h5">No account!?</Typography>
         <Typography variant="h5">No Problem.</Typography>
         <Typography variant="h5">Signing in will create one for you.</Typography>
-        <Typography variant="h5">We'll give you 10 fake dollars.</Typography>
+        <Typography variant="h5">We'll give you 100 fake dollars.</Typography>
         <StyledFirebaseAuth
           uiConfig={uiConfig}
           firebaseAuth={firebase.auth()}
